@@ -1,14 +1,18 @@
-package no.sintef.cloudml;
+package no.sintef.cloudml.cloudconnector;
 
 import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.jclouds.aws.ec2.AWSEC2Client;
+import no.sintef.cloudml.CloudConnector;
+import no.sintef.cloudml.domain.Instance;
+import no.sintef.cloudml.domain.Keys;
 import org.jclouds.aws.ec2.compute.AWSEC2TemplateOptions;
 import org.jclouds.compute.ComputeServiceContext;
 import org.jclouds.compute.ComputeServiceContextFactory;
@@ -16,9 +20,10 @@ import org.jclouds.compute.RunNodesException;
 import org.jclouds.compute.domain.NodeMetadata;
 import org.jclouds.compute.domain.Template;
 
-public class Engine {
+public class JcloudsConnector implements CloudConnector {
 
-	public static void main(String[] args) throws RunNodesException {
+	@Override
+	public List<Instance> createInstances(List<Instance> instances) {
 		String group = "default";
 		String keyPair = "dev";
 		Keys keys = null;
@@ -27,7 +32,7 @@ public class Engine {
 		try {
 			keys = gson.fromJson(new InputStreamReader(new FileInputStream("keys.json")), Keys.class);
 		} catch (FileNotFoundException ex) {
-			Logger.getLogger(Engine.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(JcloudsConnector.class.getName()).log(Level.SEVERE, null, ex);
 		}
 
 		ComputeServiceContext context = null;
@@ -44,15 +49,17 @@ public class Engine {
 
 			Set<? extends NodeMetadata> nodes = context.getComputeService().createNodesInGroup("webserver", 2, template);
 
-			AWSEC2Client ec2Client = AWSEC2Client.class.cast(context.getProviderSpecificContext().getApi());
-
-			NodeMetadata node = Iterables.get(nodes, 0);
-			System.out.println(node);
+			final NodeMetadata node = Iterables.get(nodes, 0);
+			Instance instance = new Instance();
+			instance.setImageId(node.getImageId());
+			return Arrays.asList(instance);
+		} catch (RunNodesException ex) {
+			Logger.getLogger(JcloudsConnector.class.getName()).log(Level.SEVERE, "Node could not be started", ex);
 		} finally {
 			if (context != null) {
 				context.close();
 			}
 		}
-
+		return null;
 	}
 }
