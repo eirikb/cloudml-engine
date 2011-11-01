@@ -1,21 +1,22 @@
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-	<modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-	<modules>
-		<module>software</module>
-		<module>infrastructure</module>
-	</modules>
+    <modules>
+        <module>software</module>
+        <module>infrastructure</module>
+    </modules>
 
-	<artifactId>engine</artifactId>
-	<version>0.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
+    <artifactId>engine</artifactId>
+    <version>0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
-	<parent>
-		<groupId>no.sintef.cloudml</groupId>
-		<artifactId>cloudml</artifactId>
-		<version>0.1-SNAPSHOT</version>
-	</parent>
+    <parent>
+        <groupId>no.sintef.cloudml</groupId>
+        <artifactId>cloudml</artifactId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
 </project>
