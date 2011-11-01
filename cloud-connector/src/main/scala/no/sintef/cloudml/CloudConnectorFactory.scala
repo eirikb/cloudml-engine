@@ -2,7 +2,7 @@ package no.sintef.cloudml;
 
 import no.sintef.cloudml.cloudconnector.JcloudsConnector;
 
-public class CloudConnectorFactory {
+class CloudConnectorFactory {
 
 	private CloudConnectorFactory() {
 	}
@@ -12,11 +12,11 @@ public class CloudConnectorFactory {
 	}
 
 	public static CloudConnector getCloudConnector() {
-		return new JcloudsConnector();
+		return new JcloudsConnector()
 	}
 
 	private static class CloudConnectorFactoryHolder {
 
-		private static final CloudConnectorFactory INSTANCE = new CloudConnectorFactory();
+		private static final CloudConnectorFactory INSTANCE = new CloudConnectorFactory()
 	}
 }
