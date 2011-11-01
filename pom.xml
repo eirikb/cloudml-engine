@@ -14,9 +14,7 @@
         <module>kernel</module>
         <module>repository</module>
         <module>engine</module>
-        <!--
         <module>cloud-connector</module>
-        -->
     </modules>
 
     <dependencies>

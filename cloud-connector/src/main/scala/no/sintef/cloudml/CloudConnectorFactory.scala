@@ -1,22 +1,13 @@
 package no.sintef.cloudml;
 
-import no.sintef.cloudml.cloudconnector.JcloudsConnector;
+import no.sintef.cloudml.cloudconnector.JcloudsConnector
+import no.sintef.cloudml.connector.CloudConnector
 
-class CloudConnectorFactory {
+class CloudConnectorFactory private (val instance: CloudConnector) { 
+}
 
-	private CloudConnectorFactory() {
-	}
-
-	public static CloudConnectorFactory getInstance() {
-		return CloudConnectorFactoryHolder.INSTANCE;
-	}
-
-	public static CloudConnector getCloudConnector() {
-		return new JcloudsConnector()
-	}
-
-	private static class CloudConnectorFactoryHolder {
-
-		private static final CloudConnectorFactory INSTANCE = new CloudConnectorFactory()
-	}
+object CloudConnectorFactory {
+    def create() = {
+        new JcloudsConnector()
+    }
 }
