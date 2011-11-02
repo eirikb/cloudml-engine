@@ -1,53 +1,59 @@
 package no.sintef.cloudml.cloudconnector
 
-import no.sintef.cloudml.connector.CloudConnector
+import net.liftweb.json._
 
-class JcloudsConnector extends CloudConnector {
+class JcloudsConnector {
 
-    def createInstances(instances: Any) = 7
+  def createInstances(instances: Any) {
 
+    var group = "default";
+    var keyPair = "dev";
+    val keys = null;
 
-    /*
-     @Override
-     public List<Instance> createInstances(List<Instance> instances) {
-     String group = "default";
-     String keyPair = "dev";
-     Keys keys = null;
+    val record = JsonParser.parse(" {:'test':'tast'} ")
 
-     Gson gson = new Gson();
-     try {
-     keys = gson.fromJson(new InputStreamReader(new FileInputStream("keys.json")), Keys.class);
-     } catch (FileNotFoundException ex) {
-     Logger.getLogger(JcloudsConnector.class.getName()).log(Level.SEVERE, null, ex);
-     }
+    //    keys = gson.fromJson(new InputStreamReader(new FileInputStreas))
+    //    try {
+    //      keys = gson.fromJson(newInputStreamReader(new FileInputStream("keys.json")), Keys.class);
+    //    } catch (FileNotFoundException ex)
+    //    {
+    ////      Logger.getLogger(JcloudsConnector.class.getName()).log(Level.SEVERE, null, ex);
+    //    }
 
-     ComputeServiceContext context = null;
+    //    ComputeServiceContext context = null;
+    //
+    //    try {
+    //      context = new ComputeServiceContextFactory().createContext("aws-ec2",
+    //        keys.getAccesskeyid(), keys.getSecretkey());
+    //
+    //      Template template = context.getComputeService().templateBuilder().locationId("eu-west-1").build();
+    //
+    //      template.getOptions().as(AWSEC2TemplateOptions.class).securityGroups(group);
+    //
+    //    template.getOptions().as(AWSEC2TemplateOptions.class).keyPair(keyPair);
+    //
+    //    Set <? extends NodeMetadata > nodes = context.getComputeService().createNodesInGroup("webserver", 2, template);
+    //
+    //      final NodeMetadata node = Iterables.get(nodes, 0);
+    //    Instance instance = new Instance();
+    //    instance.setImageId(node.getImageId());
+    //    return Arrays.asList(instance);
+    //    } catch (RunNodesException ex)
+    //    {
+    //      Logger.getLogger(JcloudsConnector.class.getName()).log(Level.SEVERE, "Node could not be started", ex);
+    //    } finally
+    //    {
+    //      if (context != null) {
+    //        context.close();
+    //      }
+    //    }
+    //    return null;
+  }
 
-     try {
-     context = new ComputeServiceContextFactory().createContext("aws-ec2",
-     keys.getAccesskeyid(), keys.getSecretkey());
+  /*
+  @Override
+  public List<Instance> createInstances(List<Instance> instances) {
 
-     Template template = context.getComputeService().templateBuilder().locationId("eu-west-1").build();
-
-     template.getOptions().as(AWSEC2TemplateOptions.class).securityGroups(group);
-
-     template.getOptions().as(AWSEC2TemplateOptions.class).keyPair(keyPair);
-
-     Set<? extends NodeMetadata> nodes = context.getComputeService().createNodesInGroup("webserver", 2, template);
-
-     final NodeMetadata node = Iterables.get(nodes, 0);
-     Instance instance = new Instance();
-     instance.setImageId(node.getImageId());
-     return Arrays.asList(instance);
-     } catch (RunNodesException ex) {
-     Logger.getLogger(JcloudsConnector.class.getName()).log(Level.SEVERE, "Node could not be started", ex);
-     } finally {
-     if (context != null) {
-     context.close();
-     }
-     }
-     return null;
-
-     }
-     */
+  }
+  */
 }
