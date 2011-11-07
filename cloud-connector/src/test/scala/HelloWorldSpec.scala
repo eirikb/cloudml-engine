@@ -5,9 +5,11 @@ import org.scalatest.matchers.ShouldMatchers
 
 @RunWith(classOf[JUnitRunner])
 class HelloWorldSpec extends Spec with ShouldMatchers {
-  describe("A Stack") {
+  describe("Testing tests like a boss") {
 
-    it("should pop values in last-in-first-out order") (pending)
-
+    it("should pop values in last-in-first-out order") {
+        println("Oh hai")
+        assert(1 == 1)
     }
   }
+}
