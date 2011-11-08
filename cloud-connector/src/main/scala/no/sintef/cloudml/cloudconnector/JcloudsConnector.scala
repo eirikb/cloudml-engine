@@ -1,50 +1,18 @@
 package no.sintef.cloudml.cloudconnector
 
+import org.jclouds.compute._
+import org.jclouds.aws.ec2.compute._
+import no.sintef.cloudml.repository._
 
 class JcloudsConnector {
 
-  def createInstances(instances: Any) {
+  def createInstances(instance: Instance) {
 
-    var group = "default";
-    var keyPair = "dev";
-    val keys = null;
+    val context = new ComputeServiceContextFactory().createContext("aws-ec2", instance.authKeys.accessKey, instance.authKeys.secretKey)
 
-      println("Oh well")
+    val template = context.getComputeService().templateOptions().as(classOf[AWSEC2TemplateOptions]).securityGroups(instance.group).keyPair(instance.keyPair)
 
-    //    ComputeServiceContext context = null;
-    //
-    //    try {
-    //      context = new ComputeServiceContextFactory().createContext("aws-ec2",
-    //        keys.getAccesskeyid(), keys.getSecretkey());
-    //
-    //      Template template = context.getComputeService().templateBuilder().locationId("eu-west-1").build();
-    //
-    //      template.getOptions().as(AWSEC2TemplateOptions.class).securityGroups(group);
-    //
-    //    template.getOptions().as(AWSEC2TemplateOptions.class).keyPair(keyPair);
-    //
-    //    Set <? extends NodeMetadata > nodes = context.getComputeService().createNodesInGroup("webserver", 2, template);
-    //
-    //      final NodeMetadata node = Iterables.get(nodes, 0);
-    //    Instance instance = new Instance();
-    //    instance.setImageId(node.getImageId());
-    //    return Arrays.asList(instance);
-    //    } catch (RunNodesException ex)
-    //    {
-    //      Logger.getLogger(JcloudsConnector.class.getName()).log(Level.SEVERE, "Node could not be started", ex);
-    //    } finally
-    //    {
-    //      if (context != null) {
-    //        context.close();
-    //      }
-    //    }
-    //    return null;
+    println("Here should tempalte " + template + " be built, accessKeys: " + instance.authKeys)
+    //context.getComputeService().createNodesInGroup("webserver", 2, template)
   }
-
-  /*
-  @Override
-  public List<Instance> createInstances(List<Instance> instances) {
-
-  }
-  */
 }
