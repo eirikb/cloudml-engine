@@ -12,9 +12,7 @@ class JcloudsConnectorSpec extends Spec with ShouldMatchers {
 
         it("testing testing") {
             var connector = new JcloudsConnector();
-            println("Hello world")
-            assert(1 == 1)
-            println(connector)
+            connector.createInstances();
         }
     }
 }

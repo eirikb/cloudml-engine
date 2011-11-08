@@ -1,6 +1,5 @@
 package no.sintef.cloudml.cloudconnector
 
-import net.liftweb.json._
 
 class JcloudsConnector {
 
@@ -10,15 +9,7 @@ class JcloudsConnector {
     var keyPair = "dev";
     val keys = null;
 
-    val record = JsonParser.parse(" {:'test':'tast'} ")
-
-    //    keys = gson.fromJson(new InputStreamReader(new FileInputStreas))
-    //    try {
-    //      keys = gson.fromJson(newInputStreamReader(new FileInputStream("keys.json")), Keys.class);
-    //    } catch (FileNotFoundException ex)
-    //    {
-    ////      Logger.getLogger(JcloudsConnector.class.getName()).log(Level.SEVERE, null, ex);
-    //    }
+      println("Oh well")
 
     //    ComputeServiceContext context = null;
     //
