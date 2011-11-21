@@ -1,5 +1,4 @@
 package no.sintef.cloudml.kernel
 
-class Template(node: Node) {
-}
+case class Template(name: String)
 
