@@ -15,23 +15,9 @@ class KernelSpec extends Spec with ShouldMatchers {
 
     it("testing testing") {
       implicit val formats = net.liftweb.json.DefaultFormats
-      val node = new Node()
-
-        //      val s = """{"employees":[{"fname":"Bob","lname":"Hope"},{"fname":"Bob","lname":"Smith"}]}"""
-      val s = """{"name":"test"}"""
-
-      var t = new Template("test")
-      //    println(swrite(t))
-      //println(net.liftweb.json.Serialization.read[Template](s))
-
-      println("...")
-      println(s)
+      val s = """{"name":"test", "nodes": [{"name":"Node 1"},{"name": "Node 2"}]}"""
+      val t = read[Template](s)
       println(t)
-      println(net.liftweb.json.Serialization.read[Template](s))
-      println("omg")
-      println("Hello world")
-      println("...")
-
       assert(1 === 1)
     }
   }
