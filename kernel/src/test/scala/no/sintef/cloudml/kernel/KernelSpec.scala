@@ -13,12 +13,13 @@ import net.liftweb.json.Serialization.{read, write => swrite}
 class KernelSpec extends Spec with ShouldMatchers {
   describe("Testing like a boss") {
 
-    it("testing testing") {
+    it("wires up quite well") {
       implicit val formats = net.liftweb.json.DefaultFormats
       val s = """{"name":"test", "nodes": [{"name":"Node 1"},{"name": "Node 2"}]}"""
-      kernel.create(s)
+      val t = Kernel.deserialize(s)
 
-      assert(1 === 1)
+      assert(t.nodes.length == 2)
+      assert(t == new Template("test", List(new Node("Node 1"), new Node("Node 2"))))
     }
   }
 }
