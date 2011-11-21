@@ -1,4 +1,4 @@
 package no.sintef.cloudml.kernel
 
-class Node() {
+case class Node() {
 }
