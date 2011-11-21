@@ -4,20 +4,14 @@ import net.liftweb.json._
 import net.liftweb.json.JsonAST._
 import net.liftweb.json.Serialization.read
 
-case class Employee(fname: String, lname: String) { }
-case class Employees(employees: List[Employee]) { }
-
 object Kernel {
 
-  def create(templateJson: String) :String= {
-  println(templateJson + " JSON!")
-    val e = deserialize(templateJson)
-    println(e + " RESULT!")
-      "" + e.toString()
+  def create(templateJson: String) {
+    println(templateJson + " JSON!")
   }
 
-  def deserialize(in: String): Employees = {
+  def deserialize(in: String): Template = {
     implicit val formats = DefaultFormats
-    read[Employees](in)
+    read[Teamplte](in)
   }
 }
