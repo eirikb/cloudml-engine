@@ -11,13 +11,19 @@ import no.sintef.cloudml.cloudconnector._
 
 object Kernel {
 
-    def create(templateJson: String) {
-        val template = deserialize(templateJson)
-        Engine(Account("Test", AuthKeys("Hello, ", "world!")), template)
+    def create(accountJson: String, templateJson: String) {
+        val template = deserializeTemplate(templateJson)
+        val account = deserializeAccount(accountJson)
+        Engine(account, template)
     }
 
-    def deserialize(in: String): Template = {
+    def deserializeTemplate(in: String): Template = {
         implicit val formats = DefaultFormats
         read[Template](in)
+    }
+
+    def deserializeAccount(in: String): Account = {
+        implicit val formats = DefaultFormats
+        read[Account](in)
     }
 }

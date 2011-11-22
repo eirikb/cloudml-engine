@@ -6,22 +6,28 @@ import org.scalatest.Spec
 import org.scalatest.matchers.ShouldMatchers
 
 import no.sintef.cloudml.engine.domain._
+import no.sintef.cloudml.cloudconnector._
 
 @RunWith(classOf[JUnitRunner])
 class KernelSpec extends Spec with ShouldMatchers {
     describe("Testing like a boss") {
 
-        it("wires up quite well") {
+        it("desrialilzes templates") {
             val s = """{"name":"test", "nodes": [{"name":"Node 1"},{"name": "Node 2"}]}"""
-            val t = Kernel.deserialize(s)
+            val t = Kernel.deserializeTemplate(s)
 
             assert(t.nodes.length == 2)
             assert(t == new Template("test", List(new Node("Node 1"), new Node("Node 2"))))
         }
 
-        it("calls create") {
-            val s = """{"name":"test", "nodes": [{"name":"Node 1"},{"name": "Node 2"}]}"""
-            Kernel.create(s)
+        it("desrialilzes accounts") {
+            val s = """{"name":"test", "authKeys":{"accessKey":"accessTest", "secretKey": "secretTest"}}"""
+            val a = Kernel.deserializeAccount(s)
+
+            assert(a.name == "test")
+            assert(a.authKeys.accessKey == "accessTest")
+            assert(a.authKeys.secretKey == "secretTest")
+            assert(a == Account("test", AuthKeys("accessTest", "secretTest")))
         }
     }
 }
