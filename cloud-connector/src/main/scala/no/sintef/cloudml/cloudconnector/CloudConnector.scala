@@ -1,10 +1,9 @@
-package no.sintef.cloudml
+package no.sintef.cloudml.cloudconnector
 
 import no.sintef.cloudml.repository._
-import no.sintef.cloudml.cloudconnector._
 
 trait CloudConnector {
-    def createInstance(authKeys: AuthKeys, instance: Instance)
+    def createInstance(account: Account, instance: Instance)
 }
 
 object CloudConnector {

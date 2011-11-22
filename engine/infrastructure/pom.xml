@@ -21,5 +21,10 @@
             <artifactId>repository</artifactId>
             <version>0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>no.sintef.cloudml</groupId>
+            <artifactId>cloud-connector</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>

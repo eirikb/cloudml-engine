@@ -8,13 +8,15 @@ import no.sintef.cloudml._
 
 class JcloudsConnector extends CloudConnector {
 
-    def createInstance(authKeys: AuthKeys, instance: Instance) {
+    def createInstance(account: Account, instance: Instance) {
 
-        val context = new ComputeServiceContextFactory().createContext("aws-ec2", authKeys.accessKey, authKeys.secretKey)
+        val authKeys = account.authKeys
+        println("Here should instance" + instance + " be built, accessKeys: " + authKeys)
 
-        val template = context.getComputeService().templateOptions().as(classOf[AWSEC2TemplateOptions]).securityGroups(instance.group).keyPair(instance.keyPair)
+        //val context = new ComputeServiceContextFactory().createContext("aws-ec2", authKeys.accessKey, authKeys.secretKey)
 
-        println("Here should tempalte " + template + " be built, accessKeys: " + authKeys)
+        //val template = context.getComputeService().templateOptions().as(classOf[AWSEC2TemplateOptions]).securityGroups(instance.group).keyPair(instance.keyPair)
+
         //context.getComputeService().createNodesInGroup("webserver", 2, template)
     }
 }
