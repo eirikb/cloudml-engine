@@ -1,3 +1,3 @@
 package no.sintef.cloudml.repository
 
-case class Instance(group: String, keyPair: String, authKeys: AuthKeys)
+case class Instance(group: String, keyPair: String)

@@ -8,6 +8,7 @@
     <modules>
         <module>software</module>
         <module>infrastructure</module>
+        <module>engine-domain</module>
     </modules>
 
     <artifactId>engine</artifactId>
