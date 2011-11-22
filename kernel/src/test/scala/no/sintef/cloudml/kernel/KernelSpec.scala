@@ -5,7 +5,7 @@ import org.junit.runner.RunWith
 import org.scalatest.Spec
 import org.scalatest.matchers.ShouldMatchers
 
-import no.sintef.cloudml.engine._
+import no.sintef.cloudml.engine.domain._
 
 @RunWith(classOf[JUnitRunner])
 class KernelSpec extends Spec with ShouldMatchers {

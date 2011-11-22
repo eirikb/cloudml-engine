@@ -1,6 +1,6 @@
 package no.sintef.cloudml.repository
 
-import no.sintef.cloudml.engine.Template
+import no.sintef.cloudml.engine.domain.Template
 
 object Repository {
 
