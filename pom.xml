@@ -11,10 +11,10 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>kernel</module>
         <module>repository</module>
-        <module>engine</module>
         <module>cloud-connector</module>
+        <module>engine</module>
+        <module>kernel</module>
     </modules>
 
     <dependencies>

@@ -6,9 +6,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <modules>
-        <module>software</module>
-        <module>infrastructure</module>
         <module>engine-core</module>
+        <module>infrastructure</module>
+        <module>software</module>
     </modules>
 
     <artifactId>engine</artifactId>
