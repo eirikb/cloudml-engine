@@ -18,7 +18,7 @@
     <dependencies>
         <dependency>
             <groupId>no.sintef.cloudml</groupId>
-            <artifactId>engine-domain</artifactId>
+            <artifactId>engine-core</artifactId>
             <version>0.1-SNAPSHOT</version>
         </dependency>
         <dependency>

@@ -7,6 +7,6 @@ object InfrastructureEngine {
 
     // Somethings tells me apply should not be used like this...
     def apply(template: Template) {
-        val instances = for (node <- template.nodes) yield new Instance("group?", "dev")
+        var instances = for (node <- template.nodes) yield new Instance("group?", "dev")
     }
 }
