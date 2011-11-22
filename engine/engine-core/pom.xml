@@ -14,4 +14,17 @@
         <artifactId>engine</artifactId>
         <version>0.1-SNAPSHOT</version>
     </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>no.sintef.cloudml</groupId>
+            <artifactId>repository</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>no.sintef.cloudml</groupId>
+            <artifactId>infrastructure</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>

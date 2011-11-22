@@ -23,7 +23,7 @@
         </dependency>
         <dependency>
             <groupId>no.sintef.cloudml</groupId>
-            <artifactId>infrastructure</artifactId>
+            <artifactId>engine-core</artifactId>
             <version>0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>

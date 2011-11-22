@@ -4,6 +4,7 @@ import net.liftweb.json._
 import net.liftweb.json.JsonAST._
 import net.liftweb.json.Serialization.read
 
+import no.sintef.cloudml.engine.Engine
 import no.sintef.cloudml.engine.domain._
 import no.sintef.cloudml.engine.infrastructure.InfrastructureEngine
 
@@ -11,7 +12,7 @@ object Kernel {
 
     def create(templateJson: String) {
         val template = deserialize(templateJson)
-        InfrastructureEngine(template)
+        Engine(template)
     }
 
     def deserialize(in: String): Template = {
