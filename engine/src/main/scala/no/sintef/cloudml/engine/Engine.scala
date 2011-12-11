@@ -2,8 +2,9 @@ package no.sintef.cloudml.engine
 
 import no.sintef.cloudml.kernel.Kernel
 import no.sintef.cloudml.kernel.domain._
+import no.sintef.cloudml.repository.domain._
 import no.sintef.cloudml.repository._
-import no.sintef.cloudml.engine.infrastructure.InfrastructureEngine
+import no.sintef.cloudml.cloudconnector._
 
 object Engine {
 
@@ -15,6 +16,7 @@ object Engine {
 
         val instances = Repository.mapping(account, templates)
 
-        InfrastructureEngine.apply(account, instances)
+        val cloudConnector = CloudConnector("jscloud")
+        cloudConnector.createInstance(account, instances.head)
     }
 }

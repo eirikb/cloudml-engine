@@ -5,19 +5,31 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <modules>
-        <module>engine-core</module>
-        <module>infrastructure</module>
-        <module>software</module>
-    </modules>
-
     <artifactId>engine</artifactId>
     <version>0.1-SNAPSHOT</version>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <parent>
         <groupId>no.sintef.cloudml</groupId>
         <artifactId>cloudml</artifactId>
         <version>0.1-SNAPSHOT</version>
     </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>no.sintef.cloudml</groupId>
+            <artifactId>kernel</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>no.sintef.cloudml</groupId>
+            <artifactId>repository</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>no.sintef.cloudml</groupId>
+            <artifactId>cloud-connector</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>
