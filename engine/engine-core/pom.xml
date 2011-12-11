@@ -18,6 +18,11 @@
     <dependencies>
         <dependency>
             <groupId>no.sintef.cloudml</groupId>
+            <artifactId>kernel</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>no.sintef.cloudml</groupId>
             <artifactId>repository</artifactId>
             <version>0.1-SNAPSHOT</version>
         </dependency>
