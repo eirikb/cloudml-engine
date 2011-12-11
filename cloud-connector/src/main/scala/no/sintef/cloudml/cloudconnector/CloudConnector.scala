@@ -1,6 +1,6 @@
 package no.sintef.cloudml.cloudconnector
 
-import no.sintef.cloudml.repository._
+import no.sintef.cloudml.repository.domain._
 import no.sintef.cloudml.kernel.domain._
 
 trait CloudConnector {

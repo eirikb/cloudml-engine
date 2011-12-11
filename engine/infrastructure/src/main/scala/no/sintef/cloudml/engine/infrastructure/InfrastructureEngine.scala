@@ -2,7 +2,7 @@ package no.sintef.cloudml.engine.infrastructure
 
 import no.sintef.cloudml.kernel.domain._
 import no.sintef.cloudml.cloudconnector._
-import no.sintef.cloudml.repository._
+import no.sintef.cloudml.repository.domain._
 
 object InfrastructureEngine {
 

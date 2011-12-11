@@ -1,7 +1,14 @@
-package no.sintef.cloudml.repository.domain.Instance
+package no.sintef.cloudml.repository
+
+import no.sintef.cloudml.repository.domain._
+import no.sintef.cloudml.kernel.domain._
 
 object Repository {
-    def magic(instances: List[Instance]): List[Instance] ={
-        instances
+    def mapping(account: Account, templates: List[Template]): List[Instance] = {
+        List.flatten(templates.map(template => 
+            template.nodes.map(node =>
+                Instance("default", "dev")
+            )
+        ))
     }
 }

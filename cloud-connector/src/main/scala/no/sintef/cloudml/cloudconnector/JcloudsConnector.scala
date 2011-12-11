@@ -3,7 +3,7 @@ package no.sintef.cloudml.cloudconnector
 import org.jclouds.compute._
 import org.jclouds.aws.ec2.compute._
 
-import no.sintef.cloudml.repository._
+import no.sintef.cloudml.repository.domain._
 import no.sintef.cloudml.kernel.domain._
 
 class JcloudsConnector extends CloudConnector {
