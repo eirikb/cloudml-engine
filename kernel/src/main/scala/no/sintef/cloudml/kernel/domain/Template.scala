@@ -1,4 +1,4 @@
-package no.sintef.cloudml.engine.domain
+package no.sintef.cloudml.kernel.domain
 
 case class Template(name: String, nodes: List[Node])
 
