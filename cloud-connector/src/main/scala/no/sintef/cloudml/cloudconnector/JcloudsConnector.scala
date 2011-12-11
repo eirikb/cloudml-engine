@@ -14,8 +14,9 @@ class JcloudsConnector extends CloudConnector {
 
         val context = new ComputeServiceContextFactory().createContext(account.provider, authKeys.accessKey, authKeys.secretKey)
 
-        val template = context.getComputeService().templateOptions().as(classOf[AWSEC2TemplateOptions])
+        //val template = context.getComputeService().templateOptions().as(classOf[AWSEC2TemplateOptions])
 
-        context.getComputeService().createNodesInGroup("webserver", 1, template)
+        context.getComputeService().createNodesInGroup("webserver", 1)
+        
     }
 }
