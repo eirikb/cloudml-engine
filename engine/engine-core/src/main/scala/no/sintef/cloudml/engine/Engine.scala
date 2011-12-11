@@ -6,6 +6,7 @@ import no.sintef.cloudml.engine.infrastructure.InfrastructureEngine
 
 object Engine {
 
-    def apply(account: Account, template: Template) {
-    }
+    def apply(accountJson: String, templateJson: String) {
+           }
+
 }
