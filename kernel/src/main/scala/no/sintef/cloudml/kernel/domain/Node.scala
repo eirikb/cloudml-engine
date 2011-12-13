@@ -1,3 +1,3 @@
 package no.sintef.cloudml.kernel.domain
 
-case class Node()
+case class Node(size: String)
