@@ -26,9 +26,9 @@ class RepositorySpec extends Spec with ShouldMatchers {
             val template = new Template(List(new Node(), new Node("Small"), new Node("Large")))
             val instances = Repository.mapping(account, List(template))
             assert(instances.length == 3)
-            assert(instances.head == new RackspaceInstance(2))
-            assert(instances(1) == new RackspaceInstance(1))
-            assert(instances.last == new RackspaceInstance(3))
+            assert(instances.head == new RackspaceInstance("Medium", 2))
+            assert(instances(1) == new RackspaceInstance("Small", 1))
+            assert(instances.last == new RackspaceInstance("Large", 3))
         }
     }
 }

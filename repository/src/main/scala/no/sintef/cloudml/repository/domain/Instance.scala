@@ -1,3 +1,6 @@
 package no.sintef.cloudml.repository.domain
 
-case class Instance()
+abstract class Instance() {
+    def size: String
+    def flavor: Int
+}

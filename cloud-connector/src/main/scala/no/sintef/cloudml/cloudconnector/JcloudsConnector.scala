@@ -3,6 +3,8 @@ package no.sintef.cloudml.cloudconnector
 import org.jclouds.compute._
 import org.jclouds.aws.ec2.compute._
 
+import org.jclouds.ec2.domain.InstanceType
+
 import no.sintef.cloudml.repository.domain._
 import no.sintef.cloudml.kernel.domain._
 
@@ -13,6 +15,13 @@ class JcloudsConnector extends CloudConnector {
         val authKeys = account.authKeys
 
         val context = new ComputeServiceContextFactory().createContext(account.provider, authKeys.accessKey, authKeys.secretKey)
-        context.getComputeService().createNodesInGroup("webserver", 1)
+        val computeService = context.getComputeService()
+        val template = computeService.templateBuilder().hardwareId(instance.size match {
+            case "Small" => InstanceType.M1_SMALL
+            case "Medium" =>InstanceType.M1_MEDIUM
+            case "Large" =>InstanceType.M1_LARGE
+            case _ => InstanceType.M1_MEDIUM
+        }).build()
+        context.getComputeService().createNodesInGroup("webserver", 1, template)
     }
 }
