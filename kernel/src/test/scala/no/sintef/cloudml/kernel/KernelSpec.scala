@@ -12,11 +12,11 @@ class KernelSpec extends Spec with ShouldMatchers {
     describe("Testing like a boss") {
 
         it("desrialilzes templates") {
-            val s = """{"nodes": [{},{}]}"""
+            val s = """{"nodes": [{"size": "Small"},{"size": "Medium"}]}"""
             val t = Kernel.deserializeTemplate(s)
 
             assert(t.nodes.length == 2)
-            assert(t == new Template(List(new Node(), new Node())))
+            assert(t == new Template(List(new Node("Small"), new Node())))
         }
 
         it("desrialilzes accounts") {
