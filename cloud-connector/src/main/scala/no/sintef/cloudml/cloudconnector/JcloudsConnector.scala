@@ -17,10 +17,10 @@ class JcloudsConnector extends CloudConnector {
         val context = new ComputeServiceContextFactory().createContext(account.provider, authKeys.accessKey, authKeys.secretKey)
         val computeService = context.getComputeService()
         val template = computeService.templateBuilder().hardwareId(instance.size match {
-            case "Small" => InstanceType.M1_SMALL
-            case "Medium" =>InstanceType.M1_MEDIUM
-            case "Large" =>InstanceType.M1_LARGE
-            case _ => InstanceType.M1_MEDIUM
+            case "Small" => InstanceType.T1_MICRO
+            case "Medium" => InstanceType.M1_SMALL
+            case "Large" => InstanceType.M1_LARGE
+            case _ => InstanceType.M1_SMALL
         }).build()
         context.getComputeService().createNodesInGroup("webserver", 1, template)
     }
