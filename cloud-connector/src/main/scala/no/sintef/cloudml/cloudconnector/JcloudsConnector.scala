@@ -8,9 +8,11 @@ import org.jclouds.ec2.domain.InstanceType
 import no.sintef.cloudml.repository.domain._
 import no.sintef.cloudml.kernel.domain._
 
+import scala.collection.JavaConversions._
+
 class JcloudsConnector extends CloudConnector {
 
-    def createInstance(account: Account, instance: Instance) {
+    def createInstance(account: Account, instance: Instance): RuntimeInstance  = {
 
         val authKeys = account.authKeys
 
@@ -22,6 +24,11 @@ class JcloudsConnector extends CloudConnector {
             case "Large" => InstanceType.M1_LARGE
             case _ => InstanceType.M1_SMALL
         }).build()
-        context.getComputeService().createNodesInGroup("webserver", 1, template)
+
+        val nodes = context.getComputeService().createNodesInGroup("webserver", 1, template).toSet
+
+        val node = nodes.head
+
+        new RuntimeInstance( node.getId(), node.getPrivateAddresses().toSet.head, node.getPublicAddresses().toSet.head)
     }
 }

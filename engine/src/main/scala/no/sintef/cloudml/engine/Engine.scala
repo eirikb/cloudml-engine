@@ -8,7 +8,7 @@ import no.sintef.cloudml.cloudconnector._
 
 object Engine {
 
-    def apply(accountJson: String, templatesJson: List[String]) {
+    def apply(accountJson: String, templatesJson: List[String]): RuntimeInstance = {
         val account  = Kernel.deserializeAccount(accountJson)
         val templates = templatesJson.map(templateJson =>
             Kernel.deserializeTemplate(templateJson)

@@ -4,7 +4,7 @@ import no.sintef.cloudml.repository.domain._
 import no.sintef.cloudml.kernel.domain._
 
 trait CloudConnector {
-    def createInstance(account: Account, instance: Instance)
+    def createInstance(account: Account, instance: Instance): RuntimeInstance
 }
 
 object CloudConnector {
