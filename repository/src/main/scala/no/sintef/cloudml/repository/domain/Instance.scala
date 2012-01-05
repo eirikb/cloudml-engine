@@ -1,3 +1,3 @@
 package no.sintef.cloudml.repository.domain
 
-case class Instance(size: String = "Medium")
+case class Instance(name: String, size: String = "Medium")

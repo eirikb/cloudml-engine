@@ -8,7 +8,7 @@ import no.sintef.cloudml.cloudconnector._
 
 object Engine {
 
-    def apply(accountJson: String, templatesJson: List[String]): RuntimeInstance = {
+    def apply(accountJson: String, templatesJson: List[String]): List[RuntimeInstance] = {
         val account  = Kernel.deserializeAccount(accountJson)
         val templates = templatesJson.map(templateJson =>
             Kernel.deserializeTemplate(templateJson)
@@ -17,6 +17,6 @@ object Engine {
         val instances = Repository.mapping(account, templates)
 
         val cloudConnector = CloudConnector("jscloud")
-        cloudConnector.createInstance(account, instances.head)
+        cloudConnector.createInstances(account, instances)
     }
 }
