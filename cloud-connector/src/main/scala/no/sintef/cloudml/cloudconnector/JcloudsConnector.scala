@@ -17,7 +17,7 @@ class JcloudsConnector extends CloudConnector {
         val credential = account.credential
 
         val context = new ComputeServiceContextFactory().createContext(account.provider, 
-            credential.identity, credential.credential)
+            account.identity, account.credential)
         val computeService = context.getComputeService()
 
         instances.map(instance => {

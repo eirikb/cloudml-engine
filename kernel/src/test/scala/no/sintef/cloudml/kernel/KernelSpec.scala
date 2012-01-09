@@ -27,16 +27,15 @@ class KernelSpec extends Spec with ShouldMatchers {
         it("desrialilzes accounts") {
             val s = """{
                 "provider": "aws-ec2", 
-                "credential": {
-                    "identity": "accessTest", 
-                    "credential": "secretTest"
-                }}"""
+                "identity": "accessTest", 
+                "credential": "secretTest"
+                }"""
             val a = Kernel.deserializeAccount(s)
 
             assert(a.provider == "aws-ec2")
-            assert(a.credential.identity == "accessTest")
-            assert(a.credential.credential == "secretTest")
-            assert(a == Account("aws-ec2", Credential("accessTest", "secretTest")))
+            assert(a.identity == "accessTest")
+            assert(a.credential == "secretTest")
+            assert(a == Account("aws-ec2", "accessTest", "secretTest"))
         }
     }
 }
