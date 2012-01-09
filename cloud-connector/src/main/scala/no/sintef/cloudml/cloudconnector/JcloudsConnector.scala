@@ -14,16 +14,18 @@ class JcloudsConnector extends CloudConnector {
 
     def createInstances(account: Account, instances: List[Instance]): List[RuntimeInstance]  = {
 
-        val authKeys = account.authKeys
+        val credential = account.credential
 
-        val context = new ComputeServiceContextFactory().createContext(account.provider, authKeys.accessKey, authKeys.secretKey)
+        val context = new ComputeServiceContextFactory().createContext(account.provider, 
+            credential.identity, credential.credential)
         val computeService = context.getComputeService()
 
         instances.map(instance => {
             val template = computeService.templateBuilder().minRam(instance.minRam).build()
             val nodes = context.getComputeService().createNodesInGroup("webserver", 1, template).toSet
             val node = nodes.head
-            new RuntimeInstance( node.getId(), node.getPrivateAddresses().toSet.head, node.getPublicAddresses().toSet.head, instance)
+            new RuntimeInstance( node.getId(), node.getPrivateAddresses().toSet.head, 
+                node.getPublicAddresses().toSet.head, instance)
         })
     }
 }
