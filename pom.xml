@@ -9,6 +9,15 @@
     <artifactId>cloudml</artifactId>
     <version>0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
+    <inceptionYear>2012</inceptionYear>
+
+    <licenses>
+        <license>
+            <name>LGPL</name>
+            <url>http://www.gnu.org/licenses/lgpl-3.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
     <modules>
         <module>repository</module>
@@ -37,6 +46,42 @@
 
     <build>
         <plugins>
+            <plugin>
+                <inherited>true</inherited>
+                <groupId>com.mycila.maven-license-plugin</groupId>
+                <artifactId>maven-license-plugin</artifactId>
+                <version>1.9.0</version>
+                <configuration>
+                    <strictCheck>true</strictCheck>
+                    <header>license/LICENCE_HEADER.txt</header>
+                    <failIfMissing>true</failIfMissing>
+                    <aggregate>true</aggregate>
+                    <properties>
+                        <projectname>CloudML</projectname>
+                        <organization>SINTEF ICT</organization>
+                        <owner>Eirik Brandtzæg</owner>
+                        <year>${project.inceptionYear}</year>
+                        <email>eirikb@eirikb.no</email>
+                        <artid>${project.artifactId}</artid>
+                    </properties>
+                    <mapping>
+                        <scala>JAVADOC_STYLE</scala>
+                        <conf>SCRIPT_STYLE</conf>
+                    </mapping>
+                    <excludes>
+                        <exclude>**/src/test/**</exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>check-headers</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.scala-tools</groupId>
                 <artifactId>maven-scala-plugin</artifactId>
