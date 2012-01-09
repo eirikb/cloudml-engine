@@ -7,7 +7,7 @@ object Repository {
     def mapping(account: Account, templates: List[Template]): List[Instance] = {
         List.flatten(templates.map(template => 
             template.nodes.map(node =>
-                new Instance(node.name, node.size)
+                new Instance(node.name, node.minRam)
             )
         ))
     }

@@ -12,15 +12,24 @@ class KernelSpec extends Spec with ShouldMatchers {
     describe("Testing like a boss") {
 
         it("desrialilzes templates") {
-            val s = """{"nodes": [{"name": "test1", "size": "Small"},{"name": "test2", "size": "Medium"}]}"""
+            val s = """{
+                "nodes": [{
+                    "name": "test1", "minRam": 0
+                },{
+                    "name": "test2", "minRam": 1000
+                }]}"""
             val t = Kernel.deserializeTemplate(s)
 
             assert(t.nodes.length == 2)
-            assert(t == new Template(List(new Node("test1", "Small"), new Node("test2"))))
+            assert(t == new Template(List(new Node("test1"), new Node("test2", 1000))))
         }
 
         it("desrialilzes accounts") {
-            val s = """{"provider":"aws-ec2", "authKeys":{"accessKey":"accessTest", "secretKey": "secretTest"}}"""
+            val s = """{
+                "provider": "aws-ec2", "authKeys": {
+                    "accessKey": "accessTest", 
+                    "secretKey": "secretTest"
+                }}"""
             val a = Kernel.deserializeAccount(s)
 
             assert(a.provider == "aws-ec2")
