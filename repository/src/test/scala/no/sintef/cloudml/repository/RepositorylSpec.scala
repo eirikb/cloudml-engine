@@ -10,7 +10,14 @@ import no.sintef.cloudml.repository.domain._
 
 @RunWith(classOf[JUnitRunner])
 class RepositorySpec extends Spec with ShouldMatchers {
-    describe("Testing repository types") {
+    describe("Mapping") {
+        it("should map nodes to instances") {
+            val instances = Repository.mapping(null, Template(List(Node("test1"), Node("test2", 1000), Node("test3", 2000, 5)))
+            println(instances)
+        }
+    }
+        
+        
 
 /*
         it("AWS should be mapped directly") {
