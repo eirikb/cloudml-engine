@@ -54,7 +54,7 @@
                 <configuration>
                     <strictCheck>true</strictCheck>
                     <header>license/LICENCE_HEADER.txt</header>
-                    <failIfMissing>true</failIfMissing>
+                    <failIfMissing>false</failIfMissing>
                     <aggregate>true</aggregate>
                     <properties>
                         <projectname>CloudML</projectname>
