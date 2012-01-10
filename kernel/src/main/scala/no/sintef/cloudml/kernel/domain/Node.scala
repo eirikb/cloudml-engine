@@ -22,4 +22,4 @@
  */
 package no.sintef.cloudml.kernel.domain
 
-case class Node(name: String, minRam: Int = 0)
+case class Node(name: String, minRam: Int = 0, minCores: Int = 1)

@@ -43,7 +43,7 @@ class JcloudsConnector extends CloudConnector {
         val computeService = context.getComputeService()
 
         instances.map(instance => {
-            val template = computeService.templateBuilder().minRam(instance.minRam).build()
+            val template = computeService.templateBuilder().minRam(instance.minRam).minCores(instance.minCores).build()
             val nodes = context.getComputeService().createNodesInGroup("webserver", 1, template).toSet
             val node = nodes.head
             new RuntimeInstance( node.getId(), node.getPrivateAddresses().toSet.head, 
