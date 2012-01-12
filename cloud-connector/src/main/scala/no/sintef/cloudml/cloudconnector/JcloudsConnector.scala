@@ -64,12 +64,11 @@ class JcloudsConnector extends CloudConnector {
                         val total = p.getVolumes.map(_.getSize).reduceLeft(_+_).toInt
                         total >= instance.minDisk
                     })
-                //.minBy(volumeSum(_.getVolumes))
-                //(0)
-                //minBy(_.getSize)
+
+                val f = found.sort((a,b) => {volumeSum(a.getVolumes.toList) > volumeSum(b.getVolumes.toList)}).last
 
                     println("Found: " + found)
-                    println(found.getClass)
+                    println("Found SPE: " + f)
                 }
             }
 
