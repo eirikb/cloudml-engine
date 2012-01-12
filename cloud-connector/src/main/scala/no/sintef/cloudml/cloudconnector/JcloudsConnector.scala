@@ -23,8 +23,8 @@
 package no.sintef.cloudml.cloudconnector
 
 import org.jclouds.compute._
+import org.jclouds.compute.domain.Volume
 import org.jclouds.aws.ec2.compute._
-
 import org.jclouds.ec2.domain.InstanceType
 
 import no.sintef.cloudml.repository.domain._
@@ -36,18 +36,50 @@ class JcloudsConnector extends CloudConnector {
 
     def createInstances(account: Account, instances: List[Instance]): List[RuntimeInstance]  = {
 
-        val credential = account.credential
-
         val context = new ComputeServiceContextFactory().createContext(account.provider, 
             account.identity, account.credential)
         val computeService = context.getComputeService()
 
-        instances.map(instance => {
-            val template = computeService.templateBuilder().minRam(instance.minRam).minCores(instance.minCores).build()
-            val nodes = context.getComputeService().createNodesInGroup("webserver", 1, template).toSet
-            val node = nodes.head
-            new RuntimeInstance( node.getId(), node.getPrivateAddresses().toSet.head, 
-                node.getPublicAddresses().toSet.head, instance)
-        })
+        //val profiles = computeService.listHardwareProfiles()
+
+         //   profiles.foreach(p =>
+          //   println( " " + p + "\n"))
+
+
+
+        instances.map { instance => {
+            val templateBuilder = computeService.templateBuilder().minRam(instance.minRam).minCores(instance.minCores)
+
+            if (instance.minDisk > 0) {
+                if (account.provider == "aws-ec2") {
+                    println("OH SNAP")
+                } else {
+                    val profiles = computeService.listHardwareProfiles.toList
+
+                    def volumeSum(l: List[Volume]) : Int = { 
+                        l.map(_.getSize).reduceLeft(_+_).toInt
+                    }
+
+                    val found = profiles.filter({ p =>
+                        val total = p.getVolumes.map(_.getSize).reduceLeft(_+_).toInt
+                        total >= instance.minDisk
+                    })
+                //.minBy(volumeSum(_.getVolumes))
+                //(0)
+                //minBy(_.getSize)
+
+                    println("Found: " + found)
+                    println(found.getClass)
+                }
+            }
+
+
+            //val nodes = context.getComputeService().createNodesInGroup("webserver", 1, template).toSet
+            //val node = nodes.head
+            //new RuntimeInstance( node.getId(), node.getPrivateAddresses().toSet.head, 
+             //   node.getPublicAddresses().toSet.head, instance)
+             null
+            }
+        }
     }
 }
