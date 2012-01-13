@@ -58,6 +58,9 @@ class JcloudsConnector extends CloudConnector {
                         val hw = filtered.sort((a,b) => 
                             volumeSum(a.getVolumes.toList) < volumeSum(b.getVolumes.toList)).first
                         templateBuilder.hardwareId(hw.getId)
+                    } else {
+                        // Here we could add the largest one
+                        // But...
                     }
                 }
             }
