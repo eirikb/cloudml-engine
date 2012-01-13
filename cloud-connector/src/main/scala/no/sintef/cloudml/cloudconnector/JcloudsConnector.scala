@@ -26,6 +26,7 @@ import org.jclouds.compute._
 import org.jclouds.compute.domain.Volume
 import org.jclouds.aws.ec2.compute._
 import org.jclouds.ec2.domain.InstanceType
+import org.jclouds.ec2.compute.options.EC2TemplateOptions
 
 import no.sintef.cloudml.repository.domain._
 import no.sintef.cloudml.kernel.domain._
@@ -43,29 +44,31 @@ class JcloudsConnector extends CloudConnector {
         instances.map ( instance => {
             val templateBuilder = computeService.templateBuilder().minRam(instance.minRam).minCores(instance.minCores)
 
-            if (instance.minDisk > 0) {
-                if (account.provider == "aws-ec2") {
+            if (instance.minDisk > 0 && account.provider != "aws-ec2") {
+                val profiles = computeService.listHardwareProfiles.toList
+
+                def volumeSum(l: List[Volume]) : Int = { 
+                    l.map(_.getSize).reduceLeft(_+_).toInt
+                }
+
+                val filtered = profiles.filter(p => volumeSum(p.getVolumes.toList) >= instance.minDisk)
+
+                if (filtered.size > 0) {
+                    val hw = filtered.sort((a,b) => 
+                        volumeSum(a.getVolumes.toList) < volumeSum(b.getVolumes.toList)).first
+                    templateBuilder.hardwareId(hw.getId)
                 } else {
-                    val profiles = computeService.listHardwareProfiles.toList
-
-                    def volumeSum(l: List[Volume]) : Int = { 
-                        l.map(_.getSize).reduceLeft(_+_).toInt
-                    }
-
-                    val filtered = profiles.filter(p => volumeSum(p.getVolumes.toList) >= instance.minDisk)
-
-                    if (filtered.size > 0) {
-                        val hw = filtered.sort((a,b) => 
-                            volumeSum(a.getVolumes.toList) < volumeSum(b.getVolumes.toList)).first
-                        templateBuilder.hardwareId(hw.getId)
-                    } else {
-                        // Here we could add the largest one
-                        // But...
-                    }
+                    // Here we could add the largest one
+                    // But...
                 }
             }
 
             val template = templateBuilder.build()
+
+            if (instance.minDisk > 0 && account.provider == "aws-ec2") {
+                template.getOptions().as(classOf[EC2TemplateOptions]).
+                    mapNewVolumeToDeviceName("/dev/sdm", instance.minDisk, true)
+            }
 
             val nodes = context.getComputeService().createNodesInGroup("webserver", 1, template).toSet
             val node = nodes.head
