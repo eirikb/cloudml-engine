@@ -40,7 +40,7 @@ class JcloudsConnector extends CloudConnector {
             account.identity, account.credential)
         val computeService = context.getComputeService()
 
-        instances.map { instance => {
+        instances.map ( instance => {
             val templateBuilder = computeService.templateBuilder().minRam(instance.minRam).minCores(instance.minCores)
 
             if (instance.minDisk > 0) {
@@ -52,24 +52,22 @@ class JcloudsConnector extends CloudConnector {
                         l.map(_.getSize).reduceLeft(_+_).toInt
                     }
 
-                    val found = profiles.filter({ p =>
-                        volumeSum(p.getVolumes.toList) >= instance.minDisk
-                    }).sort((a,b) => volumeSum(a.getVolumes.toList) > volumeSum(b.getVolumes.toList))
+                    val filtered = profiles.filter(p => volumeSum(p.getVolumes.toList) >= instance.minDisk)
 
-                    if (found.size > 0) {
-                        // Add to templateBuilder!
+                    if (filtered.size > 0) {
+                        val hw = filtered.sort((a,b) => 
+                            volumeSum(a.getVolumes.toList) < volumeSum(b.getVolumes.toList)).first
+                        templateBuilder.hardwareId(hw.getId)
                     }
                 }
             }
 
             val template = templateBuilder.build()
 
-
             val nodes = context.getComputeService().createNodesInGroup("webserver", 1, template).toSet
             val node = nodes.head
             new RuntimeInstance( node.getId(), node.getPrivateAddresses().toSet.head, 
                 node.getPublicAddresses().toSet.head, instance)
-            }
-        }
+        })
     }
 }
