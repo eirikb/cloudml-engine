@@ -24,6 +24,7 @@ package no.sintef.cloudml.cloudconnector
 
 import org.jclouds.compute._
 import org.jclouds.compute.domain.Volume
+import org.jclouds.compute.domain.Hardware
 import org.jclouds.aws.ec2.compute._
 import org.jclouds.ec2.domain.InstanceType
 import org.jclouds.ec2.compute.options.EC2TemplateOptions
@@ -35,8 +36,23 @@ import scala.collection.JavaConversions._
 
 class JcloudsConnector extends CloudConnector {
 
-    def createInstances(account: Account, instances: List[Instance]): List[RuntimeInstance]  = {
+    def findHardwareByDisk(profiles: List[Hardware], minDisk: Int): Hardware = {
+        def volumeSum(l: List[Volume]) : Int = { 
+            l.map(_.getSize).reduceLeft(_+_).toInt
+        }
 
+        val filtered = profiles.filter(p => volumeSum(p.getVolumes.toList) >= minDisk)
+
+        if (filtered.size > 0) {
+            filtered.sort((a,b) => 
+                volumeSum(a.getVolumes.toList) < volumeSum(b.getVolumes.toList)).first
+        } else {
+        null
+            //throw RuntimeException("meh")
+        }
+    }
+
+    def createInstances(account: Account, instances: List[Instance]): List[RuntimeInstance]  = {
         val context = new ComputeServiceContextFactory().createContext(account.provider, 
             account.identity, account.credential)
         val computeService = context.getComputeService()
@@ -46,21 +62,8 @@ class JcloudsConnector extends CloudConnector {
 
             if (instance.minDisk > 0 && account.provider != "aws-ec2") {
                 val profiles = computeService.listHardwareProfiles.toList
-
-                def volumeSum(l: List[Volume]) : Int = { 
-                    l.map(_.getSize).reduceLeft(_+_).toInt
-                }
-
-                val filtered = profiles.filter(p => volumeSum(p.getVolumes.toList) >= instance.minDisk)
-
-                if (filtered.size > 0) {
-                    val hw = filtered.sort((a,b) => 
-                        volumeSum(a.getVolumes.toList) < volumeSum(b.getVolumes.toList)).first
-                    templateBuilder.hardwareId(hw.getId)
-                } else {
-                    // Here we could add the largest one
-                    // But...
-                }
+                val hw = findHardwareByDisk(profiles, instance.minDisk)
+                templateBuilder.hardwareId(hw.getId)
             }
 
             val template = templateBuilder.build()
