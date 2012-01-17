@@ -47,12 +47,13 @@ class JcloudsConnector extends CloudConnector {
             filtered.sort((a,b) => 
                 volumeSum(a.getVolumes.toList) < volumeSum(b.getVolumes.toList)).first
         } else {
-        null
-            //throw RuntimeException("meh")
+            throw new RuntimeException("meh")
         }
     }
 
     def createInstances(account: Account, instances: List[Instance]): List[RuntimeInstance]  = {
+
+        val instanceMap = instances.map(instance => instance -> new RuntimeInstance(instance))
         val context = new ComputeServiceContextFactory().createContext(account.provider, 
             account.identity, account.credential)
         val computeService = context.getComputeService()
@@ -75,8 +76,9 @@ class JcloudsConnector extends CloudConnector {
 
             val nodes = context.getComputeService().createNodesInGroup("webserver", 1, template).toSet
             val node = nodes.head
-            new RuntimeInstance( node.getId(), node.getPrivateAddresses().toSet.head, 
-                node.getPublicAddresses().toSet.head, instance)
+            var runtimeInstance = new RuntimeInstance(instance)
+            runtimeInstance.id = node.getId()
+            runtimeInstance
         })
     }
 }
