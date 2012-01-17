@@ -25,8 +25,11 @@ class JcloudsConnectorSpec extends SpecificationWithJUnit with Mockito {
 
             val hw1 = mock[Hardware]
             //hw1.getVolumes returns List(v1, v2).asJava.asInstanceOf[java.util.List[_ <: Volume]]
+
             /*
             TODO: Halp!
+            http://stackoverflow.com/q/3293318
+
             [INFO]  found   : java.util.List[_$1] where type _$1 <: org.jclouds.compute.domain.Volume
             [INFO]  required: java.util.List[?0] where type ?0 <: org.jclouds.compute.domain.Volume
 
