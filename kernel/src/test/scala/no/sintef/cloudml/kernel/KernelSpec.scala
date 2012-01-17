@@ -1,17 +1,9 @@
 package no.sintef.cloudml.kernel
 
-//import org.scalatest.junit.JUnitRunner
-//import org.junit.runner.RunWith
-//import org.scalatest.Spec
-//import org.scalatest.matchers.ShouldMatchers
-//import org.specs2.mutable._
-//import org.scalatest.junit.JUnitRunner
-//import org.junit.runner.RunWith
 import org.specs2.mutable._
 
 import no.sintef.cloudml.kernel.domain._
 
-//@RunWith(classOf[JUnitRunner])
 class KernelSpec extends SpecificationWithJUnit {
     "Template in JSON format" should {
         "serialize to internal format" in {
