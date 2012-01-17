@@ -22,8 +22,23 @@
  */
 package no.sintef.cloudml.repository.domain
 
-case class RuntimeInstance(id: String,
-  privateAddress: String,
-  publicAddress: String,
-  instance: Instance
-)
+import scala.actors.Actor
+import scala.actors.Actor._
+import scala.collection.mutable.HashMap
+
+case class AddProperty(name: String, value: String)
+
+case class RuntimeInstance(instance: Instance) extends Actor {
+
+    val properties = new HashMap[String, String]
+    var id = ""
+
+    def act() {
+        loop {
+            receive {
+                case AddProperty (name, value) =>
+                    properties(name) = value
+            }
+        }
+    }
+}
