@@ -33,6 +33,7 @@ import no.sintef.cloudml.repository.domain._
 import no.sintef.cloudml.kernel.domain._
 
 import scala.collection.JavaConversions._
+import scala.actors.Futures
 
 class JcloudsConnector extends CloudConnector {
 
@@ -47,7 +48,7 @@ class JcloudsConnector extends CloudConnector {
             filtered.sort((a,b) => 
                 volumeSum(a.getVolumes.toList) < volumeSum(b.getVolumes.toList)).first
         } else {
-            throw new RuntimeException("meh")
+            throw new RuntimeException("minDisk too large")
         }
     }
 
@@ -59,6 +60,8 @@ class JcloudsConnector extends CloudConnector {
         val computeService = context.getComputeService()
 
         instances.map ( instance => {
+            val runtimeInstance = new RuntimeInstance(instance)
+
             val templateBuilder = computeService.templateBuilder().minRam(instance.minRam).minCores(instance.minCores)
 
             if (instance.minDisk > 0 && account.provider != "aws-ec2") {
@@ -74,10 +77,11 @@ class JcloudsConnector extends CloudConnector {
                     mapNewVolumeToDeviceName("/dev/sdm", instance.minDisk, true)
             }
 
-            val nodes = context.getComputeService().createNodesInGroup("webserver", 1, template).toSet
-            val node = nodes.head
-            var runtimeInstance = new RuntimeInstance(instance)
-            runtimeInstance.id = node.getId()
+            Futures.future {
+                val nodes = context.getComputeService().createNodesInGroup("webserver", 1, template).toSet
+                val node = nodes.head
+                runtimeInstance.id = node.getId()
+            }
             runtimeInstance
         })
     }
