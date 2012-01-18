@@ -72,11 +72,13 @@ class JcloudsConnector extends CloudConnector {
             }
 
             val template = templateBuilder.build()
+            template .getOptions().blockUntilRunning(true)
 
             if (instance.minDisk > 0 && account.provider == "aws-ec2") {
                 template.getOptions().as(classOf[EC2TemplateOptions]).
                     mapNewVolumeToDeviceName("/dev/sdm", instance.minDisk, true)
             }
+
             runtimeInstance -> template
         }).toMap
 
