@@ -54,15 +54,16 @@ class JcloudsConnector extends CloudConnector {
 
     def createInstances(account: Account, instances: List[Instance]): List[RuntimeInstance]  = {
 
-        val instanceMap = instances.map(instance => instance -> new RuntimeInstance(instance))
         val context = new ComputeServiceContextFactory().createContext(account.provider, 
             account.identity, account.credential)
         val computeService = context.getComputeService()
 
-        instances.map ( instance => {
+        val runtimeInstanceMap = instances.map ( instance => {
             val runtimeInstance = new RuntimeInstance(instance)
+            runtimeInstance.start
 
-            val templateBuilder = computeService.templateBuilder().minRam(instance.minRam).minCores(instance.minCores)
+            val templateBuilder = computeService.templateBuilder().minRam(instance.minRam).
+                minCores(instance.minCores)
 
             if (instance.minDisk > 0 && account.provider != "aws-ec2") {
                 val profiles = computeService.listHardwareProfiles.toList
@@ -76,13 +77,19 @@ class JcloudsConnector extends CloudConnector {
                 template.getOptions().as(classOf[EC2TemplateOptions]).
                     mapNewVolumeToDeviceName("/dev/sdm", instance.minDisk, true)
             }
+            runtimeInstance -> template
+        }).toMap
 
-            Futures.future {
+        Futures.future {
+            runtimeInstanceMap.foreach { case (runtimeInstance, template) => {
                 val nodes = context.getComputeService().createNodesInGroup("webserver", 1, template).toSet
                 val node = nodes.head
                 runtimeInstance ! AddProperty("id", node.getId())
-            }
-            runtimeInstance
-        })
+                runtimeInstance ! AddProperty("provider", node.getProviderId())
+                runtimeInstance ! AddProperty("name", node.getName())
+                runtimeInstance ! AddProperty("location", node.getLocation().toString)
+            }}
+        }
+        runtimeInstanceMap.keys.toList
     }
 }
