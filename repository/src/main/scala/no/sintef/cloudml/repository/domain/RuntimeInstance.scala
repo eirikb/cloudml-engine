@@ -31,7 +31,6 @@ case class AddProperty(name: String, value: String)
 case class RuntimeInstance(instance: Instance) extends Actor {
 
     val properties = new HashMap[String, String]
-    var id = ""
 
     def act() {
         loop {

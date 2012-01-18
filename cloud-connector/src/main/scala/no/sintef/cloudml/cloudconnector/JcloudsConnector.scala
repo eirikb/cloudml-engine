@@ -80,7 +80,7 @@ class JcloudsConnector extends CloudConnector {
             Futures.future {
                 val nodes = context.getComputeService().createNodesInGroup("webserver", 1, template).toSet
                 val node = nodes.head
-                runtimeInstance.id = node.getId()
+                runtimeInstance ! AddProperty("id", node.getId())
             }
             runtimeInstance
         })
