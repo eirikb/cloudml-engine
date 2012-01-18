@@ -25,18 +25,26 @@ package no.sintef.cloudml.repository.domain
 import scala.actors.Actor
 import scala.actors.Actor._
 import scala.collection.mutable.HashMap
+import scala.collection.mutable.MutableList
 
 case class AddProperty(name: String, value: String)
 
 case class RuntimeInstance(instance: Instance) extends Actor {
+    type Listener = () => Unit
+    var listeners : List[Listener] = Nil
 
     val properties = new HashMap[String, String]
+
+    def addListener(listener: Listener) {
+        listeners = listener +: listeners
+    }
 
     def act() {
         loop {
             receive {
-                case AddProperty (name, value) =>
+                case AddProperty (name, value) => 
                     properties(name) = value
+                    listeners.foreach(_())
             }
         }
     }
