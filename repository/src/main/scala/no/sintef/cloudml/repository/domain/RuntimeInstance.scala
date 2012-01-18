@@ -28,12 +28,23 @@ import scala.collection.mutable.HashMap
 import scala.collection.mutable.MutableList
 
 case class AddProperty(name: String, value: String)
+case class SetStatus(status: Status.Value)
+
+object Status extends Enumeration {
+    val Initiation, Building, Starting, Started = Value
+}
+
+object Event extends Enumeration {
+    val Property, Status = Value
+}
 
 case class RuntimeInstance(instance: Instance) extends Actor {
-    type Listener = () => Unit
-    var listeners : List[Listener] = Nil
+    private type Listener = (Event.Value) => Unit
+
+    private var listeners: List[Listener] = Nil
 
     val properties = new HashMap[String, String]
+    var status = Status.Initiation
 
     def addListener(listener: Listener) {
         listeners = listener +: listeners
@@ -44,7 +55,10 @@ case class RuntimeInstance(instance: Instance) extends Actor {
             receive {
                 case AddProperty (name, value) => 
                     properties(name) = value
-                    listeners.foreach(_())
+                    listeners.foreach(_(Event.Property))
+                case SetStatus (s) =>
+                    status = s
+                    listeners.foreach(_(Event.Status))
             }
         }
     }
