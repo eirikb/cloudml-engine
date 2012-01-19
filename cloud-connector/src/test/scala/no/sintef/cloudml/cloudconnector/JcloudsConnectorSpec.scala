@@ -15,7 +15,7 @@ import no.sintef.cloudml.kernel.domain._
 class JcloudsConnectorSpec extends SpecificationWithJUnit with Mockito {
     "JcloudsConnector" should {
         "calculate minDisk when set" in {
-            val jcloudsConnector = new JcloudsConnector()
+            val jcloudsConnector = new JcloudsConnector(null)
 
             val v1 = mock[Volume]
             v1.getSize returns 7

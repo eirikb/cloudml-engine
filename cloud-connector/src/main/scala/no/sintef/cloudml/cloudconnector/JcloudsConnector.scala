@@ -35,7 +35,7 @@ import no.sintef.cloudml.kernel.domain._
 import scala.collection.JavaConversions._
 import scala.actors.Futures
 
-class JcloudsConnector extends CloudConnector {
+class JcloudsConnector(account: Account) extends CloudConnector {
 
     def findHardwareByDisk(profiles: List[Hardware], minDisk: Int): Hardware = {
         def volumeSum(l: List[Volume]) : Int = { 
@@ -52,7 +52,7 @@ class JcloudsConnector extends CloudConnector {
         }
     }
 
-    def createInstances(account: Account, instances: List[Instance]): List[RuntimeInstance]  = {
+    override def createInstances(instances: List[Instance]): List[RuntimeInstance]  = {
 
         val context = new ComputeServiceContextFactory().createContext(account.provider, 
             account.identity, account.credential)
@@ -103,12 +103,19 @@ class JcloudsConnector extends CloudConnector {
                 val metadata = client.getNodeMetadata(node.getId());
 
                 runtimeInstance ! AddProperty("privateAddresses", metadata.getPrivateAddresses().mkString(","))
-                runtimeInstance ! AddProperty("publicAddresses", metadata.getPublicAddresses().mkString(",")
+                runtimeInstance ! AddProperty("publicAddresses", metadata.getPublicAddresses().mkString(","))
 
                 runtimeInstance ! SetStatus(Status.Started)
                 runtimeInstance
             }}
         }
         runtimeInstanceMap.keys.toList
+    }
+
+    override def destroyInstance(id: String) {
+        val context = new ComputeServiceContextFactory().createContext(account.provider, 
+            account.identity, account.credential)
+        val client = context.getComputeService()
+        client.destroyNode(id)
     }
 }

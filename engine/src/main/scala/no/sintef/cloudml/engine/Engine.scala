@@ -38,7 +38,7 @@ object Engine {
 
         val instances = Repository.mapping(account, templates)
 
-        val cloudConnector = CloudConnector("jscloud")
-        cloudConnector.createInstances(account, instances)
+        val cloudConnector = CloudConnector(account, "jscloud")
+        cloudConnector.createInstances(instances)
     }
 }

@@ -26,15 +26,16 @@ import no.sintef.cloudml.repository.domain._
 import no.sintef.cloudml.kernel.domain._
 
 trait CloudConnector {
-    def createInstances(account: Account, instance: List[Instance]): List[RuntimeInstance]
+    def createInstances(instance: List[Instance]): List[RuntimeInstance]
+    def destroyInstance(id: String)
 }
 
 object CloudConnector {
 
-    def apply(instanceType: String): CloudConnector = instanceType match {
+    def apply(account: Account, instanceType: String): CloudConnector = instanceType match {
         case "jclouds" =>
-            new JcloudsConnector();
+            new JcloudsConnector(account);
         case _ =>
-            new JcloudsConnector();
+            new JcloudsConnector(account);
     }
 }
