@@ -79,17 +79,34 @@ class JcloudsConnector extends CloudConnector {
                     mapNewVolumeToDeviceName("/dev/sdm", instance.minDisk, true)
             }
 
+            runtimeInstance ! AddProperty("test", "tast")
+            runtimeInstance ! AddProperty("imageId", template.getImage.getId())
+            runtimeInstance ! AddProperty("location", template.getLocation.getId())
+
             runtimeInstance -> template
         }).toMap
 
+        val client = context.getComputeService()
         Futures.future {
             runtimeInstanceMap.foreach { case (runtimeInstance, template) => {
-                val nodes = context.getComputeService().createNodesInGroup("webserver", 1, template).toSet
+                runtimeInstance ! SetStatus(Status.Building)
+
+                val nodes = client.createNodesInGroup("webserver", 1, template).toSet
                 val node = nodes.head
                 runtimeInstance ! AddProperty("id", node.getId())
                 runtimeInstance ! AddProperty("provider", node.getProviderId())
                 runtimeInstance ! AddProperty("name", node.getName())
                 runtimeInstance ! AddProperty("location", node.getLocation().toString)
+
+                runtimeInstance ! SetStatus(Status.Starting)
+
+                val metadata = client.getNodeMetadata(node.getId());
+
+                runtimeInstance ! AddProperty("privateAddresses", metadata.getPrivateAddresses().mkString(","))
+                runtimeInstance ! AddProperty("publicAddresses", metadata.getPublicAddresses().mkString(",")
+
+                runtimeInstance ! SetStatus(Status.Started)
+                runtimeInstance
             }}
         }
         runtimeInstanceMap.keys.toList
