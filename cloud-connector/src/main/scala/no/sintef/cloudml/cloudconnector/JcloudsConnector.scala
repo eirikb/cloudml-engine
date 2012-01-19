@@ -104,6 +104,7 @@ class JcloudsConnector(account: Account) extends CloudConnector {
 
                 runtimeInstance ! AddProperty("privateAddresses", metadata.getPrivateAddresses().mkString(","))
                 runtimeInstance ! AddProperty("publicAddresses", metadata.getPublicAddresses().mkString(","))
+                runtimeInstance ! AddProperty("id", metadata.getId())
 
                 runtimeInstance ! SetStatus(Status.Started)
                 runtimeInstance
