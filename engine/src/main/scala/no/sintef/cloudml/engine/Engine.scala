@@ -30,6 +30,8 @@ import no.sintef.cloudml.cloudconnector._
 
 object Engine {
 
+    private var cloudConnector: CloudConnector = null
+
     def apply(accountJson: String, templatesJson: List[String]): List[RuntimeInstance] = {
         val account  = Kernel.deserializeAccount(accountJson)
         val templates = templatesJson.map(templateJson =>
@@ -38,7 +40,11 @@ object Engine {
 
         val instances = Repository.mapping(account, templates)
 
-        val cloudConnector = CloudConnector(account, "jscloud")
+        cloudConnector = CloudConnector(account, "jscloud")
         cloudConnector.createInstances(instances)
+    }
+
+    def destroyNode(id: String) {
+        cloudConnector.destroyInstance(id)
     }
 }
