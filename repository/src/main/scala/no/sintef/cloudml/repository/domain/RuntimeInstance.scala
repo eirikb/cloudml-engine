@@ -31,7 +31,7 @@ case class AddProperty(name: String, value: String)
 case class SetStatus(status: Status.Value)
 
 object Status extends Enumeration {
-    val Initiation, Building, Starting, Started = Value
+    val Configuring, Building, Starting, Started = Value
 }
 
 object Event extends Enumeration {
@@ -44,7 +44,7 @@ case class RuntimeInstance(instance: Instance) extends Actor {
     private var listeners: List[Listener] = Nil
 
     val properties = new HashMap[String, String]
-    var status = Status.Initiation
+    var status = Status.Configuring
 
     def addListener(listener: Listener) {
         listeners = listener +: listeners

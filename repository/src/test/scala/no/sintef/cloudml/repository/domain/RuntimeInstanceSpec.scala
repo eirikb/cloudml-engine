@@ -12,7 +12,7 @@ class RuntimeInstanceSpec extends SpecificationWithJUnit {
             ri.instance mustEqual(i)
 
             var count = 0
-            var status = Status.Initiation
+            var status = Status.Configuring
 
             ri.addListener( (event) => 
                 event match {
