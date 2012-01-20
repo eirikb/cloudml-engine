@@ -34,6 +34,12 @@
         </repository>
     </repositories>
 
+    <scm>
+        <connection>scm:git:git@github.com:eirikb/cloudml-engine.git</connection>
+        <developerConnection>scm:git:git@github.com:eirikb/cloudml-engine.git</developerConnection>
+        <url>git@github.com:eirikb/cloudml-engine.git</url>
+    </scm>
+
     <dependencies>
         <dependency>
             <groupId>org.scala-lang</groupId>
