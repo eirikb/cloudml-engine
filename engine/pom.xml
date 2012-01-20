@@ -10,24 +10,24 @@
     <packaging>jar</packaging>
 
     <parent>
-        <groupId>no.sintef.cloudml</groupId>
+        <groupId>no.sintef</groupId>
         <artifactId>cloudml</artifactId>
         <version>0.1-SNAPSHOT</version>
     </parent>
 
     <dependencies>
         <dependency>
-            <groupId>no.sintef.cloudml</groupId>
+            <groupId>no.sintef</groupId>
             <artifactId>kernel</artifactId>
             <version>0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>no.sintef.cloudml</groupId>
+            <groupId>no.sintef</groupId>
             <artifactId>repository</artifactId>
             <version>0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>no.sintef.cloudml</groupId>
+            <groupId>no.sintef</groupId>
             <artifactId>cloud-connector</artifactId>
             <version>0.1-SNAPSHOT</version>
         </dependency>

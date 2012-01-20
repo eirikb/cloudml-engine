@@ -10,7 +10,7 @@
     <packaging>jar</packaging>
 
     <parent>
-        <groupId>no.sintef.cloudml</groupId>
+        <groupId>no.sintef</groupId>
         <artifactId>cloudml</artifactId>
         <version>0.1-SNAPSHOT</version>
     </parent>

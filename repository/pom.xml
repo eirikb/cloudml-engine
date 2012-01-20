@@ -10,7 +10,7 @@
     <packaging>jar</packaging>
 
     <parent>
-        <groupId>no.sintef.cloudml</groupId>
+        <groupId>no.sintef</groupId>
         <artifactId>cloudml</artifactId>
         <version>0.1-SNAPSHOT</version>
     </parent>
@@ -22,7 +22,7 @@
             <version>2.4-M5</version>
         </dependency>
         <dependency>
-            <groupId>no.sintef.cloudml</groupId>
+            <groupId>no.sintef</groupId>
             <artifactId>kernel</artifactId>
             <version>0.1-SNAPSHOT</version>
         </dependency>
