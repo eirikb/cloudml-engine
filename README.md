@@ -13,14 +13,26 @@ Usage
 --
 
 The library is still under development, but this should be sufficient:
+(Hosted by CloudBees - https://repository-eirikb.forge.cloudbees.com/release/)  
 
-* Build the library
 * Add this to your pom
 
-        <groupId>no.sintef.cloudml</groupId>
+    <repositories>
+        ...
+        <repository>
+            <id>cloudml-engine</id>
+            <url>https://repository-eirikb.forge.cloudbees.com/release/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        ...
+        <dependency>
+            <groupId>no.sintef</groupId>
             <artifactId>engine</artifactId>
-            <version>0.1-SNAPSHOT</version>
+            <version>0.1</version>
         </dependency>
+    </dependencies>
 
 * Create an account in JSON format
 
