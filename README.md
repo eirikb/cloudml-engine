@@ -17,22 +17,22 @@ The library is still under development, but this should be sufficient:
 
 * Add this to your pom
 
-    <repositories>
-        ...
-        <repository>
-            <id>cloudml-engine</id>
-            <url>https://repository-eirikb.forge.cloudbees.com/release/</url>
-        </repository>
-    </repositories>
+        <repositories>
+            ...
+            <repository>
+                <id>cloudml-engine</id>
+                <url>https://repository-eirikb.forge.cloudbees.com/release/</url>
+            </repository>
+        </repositories>
 
-    <dependencies>
-        ...
-        <dependency>
-            <groupId>no.sintef</groupId>
-            <artifactId>engine</artifactId>
-            <version>0.1</version>
-        </dependency>
-    </dependencies>
+        <dependencies>
+            ...
+            <dependency>
+                <groupId>no.sintef</groupId>
+                <artifactId>engine</artifactId>
+                <version>0.1</version>
+            </dependency>
+        </dependencies>
 
 * Create an account in JSON format
 
