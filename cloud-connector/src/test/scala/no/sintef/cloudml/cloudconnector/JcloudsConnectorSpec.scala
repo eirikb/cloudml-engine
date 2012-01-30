@@ -18,23 +18,28 @@ class JcloudsConnectorSpec extends SpecificationWithJUnit with Mockito {
             val jcloudsConnector = new JcloudsConnector(null)
 
             val v1 = mock[Volume]
-            v1.getSize returns 7
-
             val v2 = mock[Volume]
-            v2.getSize returns 10
+            val v3 = mock[Volume]
+            val v4 = mock[Volume]
 
-            val hw1 = mock[Hardware]
-            //hw1.getVolumes returns List(v1, v2).asJava.asInstanceOf[java.util.List[_ <: Volume]]
+            v1.getSize returns 2
+            v2.getSize returns 3
+            v3.getSize returns 6
+            v4.getSize returns 8
 
-            /*
-            TODO: Halp!
-            http://stackoverflow.com/q/3293318
+            val hardware1 = mock[Hardware]
+            val hardware2 = mock[Hardware]
 
-            [INFO]  found   : java.util.List[_$1] where type _$1 <: org.jclouds.compute.domain.Volume
-            [INFO]  required: java.util.List[?0] where type ?0 <: org.jclouds.compute.domain.Volume
+            hardware1.getVolumes.asInstanceOf[java.util.List[Object]] returns 
+                    java.util.Arrays.asList(v1, v2)
 
-            */
-            1 mustEqual 1
+            hardware2.getVolumes.asInstanceOf[java.util.List[Object]] returns 
+                    java.util.Arrays.asList(v3, v4)
+
+            jcloudsConnector.findHardwareByDisk(List(hardware1, hardware2), 0) mustEqual hardware1
+            jcloudsConnector.findHardwareByDisk(List(hardware1, hardware2), 4) mustEqual hardware1
+            jcloudsConnector.findHardwareByDisk(List(hardware1, hardware2), 11) mustEqual hardware2
+            jcloudsConnector.findHardwareByDisk(List(hardware1, hardware2), 100) must throwA[RuntimeException]
         }
     }
 }
