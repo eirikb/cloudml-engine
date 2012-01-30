@@ -26,7 +26,6 @@ import no.sintef.cloudml.kernel.domain._
 trait CloudConnector {
     def createInstances(instance: List[Instance]): List[RuntimeInstance]
     def destroyInstance(id: String)
-    def runScript(id: String, script: String)
 }
 
 object CloudConnector {

@@ -78,12 +78,13 @@ class JcloudsConnector(account: Account) extends CloudConnector {
             }
 
             val template = templateBuilder.build()
-            template .getOptions().blockUntilRunning(true)
 
             if (instance.minDisk > 0 && account.provider == "aws-ec2") {
                 template.getOptions().as(classOf[EC2TemplateOptions]).
                     mapNewVolumeToDeviceName("/dev/sdm", instance.minDisk, true)
             }
+
+            template.getOptions().blockUntilRunning(true)
 
             runtimeInstance ! AddProperty("test", "tast")
             runtimeInstance ! AddProperty("imageId", template.getImage.getId())
@@ -121,10 +122,5 @@ class JcloudsConnector(account: Account) extends CloudConnector {
     override def destroyInstance(id: String) {
         val client = auth()
         client.destroyNode(id)
-    }
-
-    override def runScript(id: String, script: String) {
-        val client = auth()
-        client.runScriptOnNode(id, script)
     }
 }
