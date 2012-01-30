@@ -38,7 +38,7 @@ The library is still under development, but this should be sufficient:
 
 * Create an account in JSON format
 
-    ```json
+    ```scala
     val account = """{
         "provider": "aws-ec2", 
         "identity": "...", 
@@ -48,7 +48,7 @@ The library is still under development, but this should be sufficient:
 
 * Create a template in JSON format
 
-    ```json
+    ```scala
     val template = """{"nodes": [{
             "name": "testnode", "minRam": 0, "minCores": 0
         }]}"""
