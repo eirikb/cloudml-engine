@@ -51,8 +51,8 @@ class JcloudsConnector(account: Account) extends CloudConnector {
         val filtered = profiles.filter(p => volumeSum(p.getVolumes.toList) >= minDisk)
 
         if (filtered.size > 0) {
-            filtered.sort((a,b) => 
-                volumeSum(a.getVolumes.toList) < volumeSum(b.getVolumes.toList)).first
+            filtered.sortWith((a, b) => 
+                volumeSum(a.getVolumes.toList) < volumeSum(b.getVolumes.toList)).head
         } else {
             throw new RuntimeException("minDisk too large")
         }

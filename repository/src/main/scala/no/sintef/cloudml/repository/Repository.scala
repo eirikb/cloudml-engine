@@ -27,7 +27,7 @@ import no.sintef.cloudml.kernel.domain._
 
 object Repository {
     def mapping(account: Account, templates: List[Template]): List[Instance] = {
-        List.flatten(templates.map(template => 
+        templates.map(template => 
             template.nodes.map(node =>
                 new Instance(node.name, 
                   node.minRam.getOrElse(0),
@@ -35,6 +35,6 @@ object Repository {
                   node.minDisk.getOrElse(0),
                   node.locationId.getOrElse(""))
             )
-        ))
+        ).flatten
     }
 }
