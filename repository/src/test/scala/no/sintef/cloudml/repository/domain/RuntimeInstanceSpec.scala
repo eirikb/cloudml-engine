@@ -5,7 +5,7 @@ import org.specs2.mutable._
 class RuntimeInstanceSpec extends SpecificationWithJUnit {
     "RuntimeInstance actors" should {
         "react and add properties when called" in {
-            val i = Instance("test", 0, 0, 0)
+            val i = Instance("test", 0, 0, 0, "")
             var ri = new RuntimeInstance(i)
             ri.start
 

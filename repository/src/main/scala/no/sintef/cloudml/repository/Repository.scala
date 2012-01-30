@@ -29,7 +29,11 @@ object Repository {
     def mapping(account: Account, templates: List[Template]): List[Instance] = {
         List.flatten(templates.map(template => 
             template.nodes.map(node =>
-                new Instance(node.name, node.minRam, node.minCores, node.minDisk)
+                new Instance(node.name, 
+                  node.minRam.getOrElse(0),
+                  node.minCores.getOrElse(1),
+                  node.minDisk.getOrElse(0),
+                  node.locationId.getOrElse(""))
             )
         ))
     }

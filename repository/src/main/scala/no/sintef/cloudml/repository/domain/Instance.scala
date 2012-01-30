@@ -22,5 +22,5 @@
  */
 package no.sintef.cloudml.repository.domain
 
-case class Instance(name: String, minRam: Int, minCores: Int,
-    minDisk: Int)
+case class Instance(name: String, minRam: Int, minCores: Int, minDisk: Int, 
+    locationId: String)
