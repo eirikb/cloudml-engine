@@ -17,40 +17,48 @@ The library is still under development, but this should be sufficient:
 
 * Add this to your pom
 
-        <repositories>
-            ...
-            <repository>
-                <id>cloudml-engine</id>
-                <url>https://repository-eirikb.forge.cloudbees.com/release/</url>
-            </repository>
-        </repositories>
+    ```xml
+    <repositories>
+        ...
+        <repository>
+            <id>cloudml-engine</id>
+            <url>https://repository-eirikb.forge.cloudbees.com/release/</url>
+        </repository>
+    </repositories>
 
-        <dependencies>
-            ...
-            <dependency>
-                <groupId>no.sintef</groupId>
-                <artifactId>engine</artifactId>
-                <version>0.1</version>
-            </dependency>
-        </dependencies>
+    <dependencies>
+        ...
+        <dependency>
+            <groupId>no.sintef</groupId>
+            <artifactId>engine</artifactId>
+            <version>0.1</version>
+        </dependency>
+    </dependencies>
+    ```
 
 * Create an account in JSON format
 
-        val account = """{
-            "provider": "aws-ec2", 
-            "identity": "...", 
-            "credential": "..."
-            }"""
+    ```json
+    val account = """{
+        "provider": "aws-ec2", 
+        "identity": "...", 
+        "credential": "..."
+        }"""
+    ```
 
 * Create a template in JSON format
 
-        val template = """{"nodes": [{
-                "name": "testnode", "minRam": 0, "minCores": 0
-            }]}"""
+    ```json
+    val template = """{"nodes": [{
+            "name": "testnode", "minRam": 0, "minCores": 0
+        }]}"""
+    ```
 
 * This code should be enough
 
-        import no.sintef.cloudml.engine.Engine
-        ...
-        val runtimeInstances = Engine(account, List(template))
+    ```scala
+    import no.sintef.cloudml.engine.Engine
+    ...
+    val runtimeInstances = Engine(account, List(template))
+    ```
 
