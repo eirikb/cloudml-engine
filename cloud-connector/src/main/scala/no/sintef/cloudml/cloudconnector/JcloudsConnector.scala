@@ -37,6 +37,12 @@ import scala.actors.Futures
 
 class JcloudsConnector(account: Account) extends CloudConnector {
 
+    private def auth() = {
+        val context = new ComputeServiceContextFactory().createContext(account.provider, 
+            account.identity, account.credential)
+        context.getComputeService()
+    }
+
     def findHardwareByDisk(profiles: List[Hardware], minDisk: Int): Hardware = {
         def volumeSum(l: List[Volume]) : Int = { 
             l.map(_.getSize).reduceLeft(_+_).toInt
@@ -53,20 +59,17 @@ class JcloudsConnector(account: Account) extends CloudConnector {
     }
 
     override def createInstances(instances: List[Instance]): List[RuntimeInstance]  = {
-
-        val context = new ComputeServiceContextFactory().createContext(account.provider, 
-            account.identity, account.credential)
-        val computeService = context.getComputeService()
+        val client = auth()
 
         val runtimeInstanceMap = instances.map ( instance => {
             val runtimeInstance = new RuntimeInstance(instance)
             runtimeInstance.start
 
-            val templateBuilder = computeService.templateBuilder().minRam(instance.minRam).
+            val templateBuilder = client.templateBuilder().minRam(instance.minRam).
                 minCores(instance.minCores).locationId(instance.locationId)
 
             if (instance.minDisk > 0 && account.provider != "aws-ec2") {
-                val profiles = computeService.listHardwareProfiles.toList
+                val profiles = client.listHardwareProfiles.toList
                 val hw = findHardwareByDisk(profiles, instance.minDisk)
                 templateBuilder.hardwareId(hw.getId)
             }
@@ -86,7 +89,6 @@ class JcloudsConnector(account: Account) extends CloudConnector {
             runtimeInstance -> template
         }).toMap
 
-        val client = context.getComputeService()
         Futures.future {
             runtimeInstanceMap.foreach { case (runtimeInstance, template) => {
                 runtimeInstance ! SetStatus(Status.Building)
@@ -114,16 +116,12 @@ class JcloudsConnector(account: Account) extends CloudConnector {
     }
 
     override def destroyInstance(id: String) {
-        val context = new ComputeServiceContextFactory().createContext(account.provider, 
-            account.identity, account.credential)
-        val client = context.getComputeService()
+        val client = auth()
         client.destroyNode(id)
     }
 
     override def runScript(id: String, script: String) {
-        val context = new ComputeServiceContextFactory().createContext(account.provider, 
-            account.identity, account.credential)
-        val client = context.getComputeService()
+        val client = auth()
         client.runScriptOnNode(id, script)
     }
 }
