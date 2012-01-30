@@ -119,4 +119,11 @@ class JcloudsConnector(account: Account) extends CloudConnector {
         val client = context.getComputeService()
         client.destroyNode(id)
     }
+
+    override def runScript(id: String, script: String) {
+        val context = new ComputeServiceContextFactory().createContext(account.provider, 
+            account.identity, account.credential)
+        val client = context.getComputeService()
+        client.runScriptOnNode(id, script)
+    }
 }
