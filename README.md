@@ -1,16 +1,16 @@
 CloudML
--
+===
 
 Templating language and engine for multicloud deployments.  
 Currently supports instance initialization.
 
 Build
---
+---
 
     mvn clean install
 
 Usage
---
+---
 
 The library is still under development, but this should be sufficient:
 (Hosted by CloudBees - https://repository-eirikb.forge.cloudbees.com/release/)  
