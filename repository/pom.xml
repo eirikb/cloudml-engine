@@ -5,20 +5,20 @@
 
     <groupId>no.sintef.cloudml</groupId>
     <artifactId>repository</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.2</version>
     <packaging>jar</packaging>
 
     <parent>
         <groupId>no.sintef</groupId>
         <artifactId>cloudml</artifactId>
-        <version>0.2-SNAPSHOT</version>
+        <version>0.2</version>
     </parent>
 
     <dependencies>
         <dependency>
             <groupId>no.sintef.cloudml</groupId>
             <artifactId>kernel</artifactId>
-            <version>0.2-SNAPSHOT</version>
+            <version>0.2</version>
         </dependency>
     </dependencies>
 </project>
