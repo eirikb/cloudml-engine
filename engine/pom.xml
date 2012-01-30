@@ -16,17 +16,17 @@
 
     <dependencies>
         <dependency>
-            <groupId>no.sintef</groupId>
+            <groupId>no.sintef.cloudml</groupId>
             <artifactId>kernel</artifactId>
             <version>0.2-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>no.sintef</groupId>
+            <groupId>no.sintef.cloudml</groupId>
             <artifactId>repository</artifactId>
             <version>0.2-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>no.sintef</groupId>
+            <groupId>no.sintef.cloudml</groupId>
             <artifactId>cloud-connector</artifactId>
             <version>0.2-SNAPSHOT</version>
         </dependency>
