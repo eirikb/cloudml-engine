@@ -63,8 +63,13 @@ class JcloudsConnector(account: Account) extends CloudConnector {
             val runtimeInstance = new RuntimeInstance(instance)
             runtimeInstance.start
 
-            val templateBuilder = client.templateBuilder().minRam(instance.minRam).
-                minCores(instance.minCores).locationId(instance.locationId)
+            val templateBuilder = client.templateBuilder()
+            if (instance.minRam > 0) 
+                templateBuilder.minRam(instance.minRam)
+            if (instance.minRam > 0) 
+                templateBuilder.minCores(instance.minCores)
+            if (!Option(instance.locationId).getOrElse("").isEmpty)
+                templateBuilder.locationId(instance.locationId)
 
             if (instance.minDisk > 0 && account.provider != "aws-ec2") {
                 val profiles = client.listHardwareProfiles.toList
