@@ -23,6 +23,7 @@ package no.sintef.cloudml.cloudconnector
 import org.jclouds.compute._
 import org.jclouds.compute.domain.Volume
 import org.jclouds.compute.domain.Hardware
+import org.jclouds.loadbalancer._
 import org.jclouds.aws.ec2.compute._
 import org.jclouds.ec2.domain.InstanceType
 import org.jclouds.ec2.compute.options.EC2TemplateOptions
@@ -39,6 +40,12 @@ class JcloudsConnector(account: Account) extends CloudConnector {
         val context = new ComputeServiceContextFactory().createContext(account.provider, 
             account.identity, account.credential)
         context.getComputeService()
+    }
+
+    private def getLoadBalancerContext() = {
+        val context = new LoadBalancerServiceContextFactory().createContext(account.provider, 
+            account.identity, account.credential)
+        context.getLoadBalancerService()
     }
 
     def findHardwareByDisk(profiles: List[Hardware], minDisk: Int): Hardware = {
@@ -87,7 +94,6 @@ class JcloudsConnector(account: Account) extends CloudConnector {
 
             template.getOptions().blockUntilRunning(true)
 
-            runtimeInstance ! AddProperty("test", "tast")
             runtimeInstance ! AddProperty("imageId", template.getImage.getId())
             runtimeInstance ! AddProperty("location", template.getLocation.getId())
 
@@ -95,6 +101,8 @@ class JcloudsConnector(account: Account) extends CloudConnector {
         }).toMap
 
         Futures.future {
+            var counter = runtimeInstanceMap.size()
+
             runtimeInstanceMap.foreach { case (runtimeInstance, template) => {
                 runtimeInstance ! SetStatus(Status.Building)
 
@@ -114,6 +122,16 @@ class JcloudsConnector(account: Account) extends CloudConnector {
                 runtimeInstance ! AddProperty("id", metadata.getId())
 
                 runtimeInstance ! SetStatus(Status.Started)
+
+                counter -= 1
+                if (counter == 0 && loadBalancer.isDefined) {
+                    val lb = loadBalancer.get
+                    val loadBalancerContext = getLoadBalancerContext()
+                    val balancer = loadBalancerContext.createLoadBalancerInLocation(
+                            null, lb.name, lb.protocol, lb.loadBalancerPort, 
+                            lb.instancePort, nodes)
+                }
+
                 runtimeInstance
             }}
         }
