@@ -20,4 +20,5 @@
  */
 package no.sintef.cloudml.kernel.domain
 
-case class Template(name: String, loadBalancer: Option[LoadBalancer], nodes: List[Node])
+case class LoadBalancer(location: Option[String], name: String, protocol: String,
+    loadBalancerPort: Int, instancePort: Int)

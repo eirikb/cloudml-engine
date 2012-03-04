@@ -9,6 +9,12 @@ class KernelSpec extends SpecificationWithJUnit {
         "serialize to internal format" in {
             val s = """{
                 "name": "test",
+                "loadBalancer": {
+                    "name": "test",
+                    "protocol": "http",
+                    "loadBalancerPort": 80,
+                    "instancePort": 80
+                },
                 "nodes": [{
                     "name": "test1"
                 },{
@@ -21,7 +27,10 @@ class KernelSpec extends SpecificationWithJUnit {
             val t = Kernel.deserializeTemplate(s)
 
             t.nodes.length === 2
-            t mustEqual(new Template("test", List(new Node("test1", None, None, None, None), new Node("test2", Some(1000), Some(2), Some(2000), Some("USA")))))
+            t mustEqual(new Template("test", 
+                Some(new LoadBalancer(None, "test", "http", 80, 80)), 
+                List(new Node("test1", None, None, None, None), 
+                    new Node("test2", Some(1000), Some(2), Some(2000), Some("USA")))))
             1 mustEqual 1
         }
      }
