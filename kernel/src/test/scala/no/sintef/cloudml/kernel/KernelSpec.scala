@@ -8,6 +8,7 @@ class KernelSpec extends SpecificationWithJUnit {
     "Template in JSON format" should {
         "serialize to internal format" in {
             val s = """{
+                "name": "test",
                 "nodes": [{
                     "name": "test1"
                 },{
@@ -20,7 +21,7 @@ class KernelSpec extends SpecificationWithJUnit {
             val t = Kernel.deserializeTemplate(s)
 
             t.nodes.length === 2
-            t mustEqual(new Template(List(new Node("test1", None, None, None, None), new Node("test2", Some(1000), Some(2), Some(2000), Some("USA")))))
+            t mustEqual(new Template("test", List(new Node("test1", None, None, None, None), new Node("test2", Some(1000), Some(2), Some(2000), Some("USA")))))
             1 mustEqual 1
         }
      }

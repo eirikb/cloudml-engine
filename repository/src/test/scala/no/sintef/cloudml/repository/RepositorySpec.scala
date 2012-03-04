@@ -9,7 +9,7 @@ class RepositorySpec extends SpecificationWithJUnit {
     "Nodes" should {
         "map to instances" in {
             val instances = Repository.mapping(null, List(
-                Template(List(
+                Template("test", List(
                     Node("test1", None, None, None, None),
                     Node("test2", Some(1000), None, None, None),
                     Node("test3", Some(2000), Some(5), None, None),
