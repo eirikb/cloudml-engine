@@ -8,12 +8,12 @@ import no.sintef.cloudml.repository.domain._
 class RepositorySpec extends SpecificationWithJUnit {
     "Nodes" should {
         "map to instances" in {
-            val instances = Repository.mapping(null, List(
+            val instances = Repository.mapping(
                 Template("test", None, List(
                     Node("test1", None, None, None, None),
                     Node("test2", Some(1000), None, None, None),
                     Node("test3", Some(2000), Some(5), None, None),
-                    Node("test4", Some(2000), Some(5), Some(1000), None)))))
+                    Node("test4", Some(2000), Some(5), Some(1000), None))))
 
             instances mustEqual(List(
                 Instance("test1", "test", 0, 1, 0, ""),

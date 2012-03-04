@@ -24,16 +24,14 @@ import no.sintef.cloudml.repository.domain._
 import no.sintef.cloudml.kernel.domain._
 
 object Repository {
-    def mapping(account: Account, templates: List[Template]): List[Instance] = {
-        templates.map(template => 
-            template.nodes.map(node =>
-                new Instance(node.name, 
-                  template.name,
-                  node.minRam.getOrElse(0),
-                  node.minCores.getOrElse(1),
-                  node.minDisk.getOrElse(0),
-                  node.locationId.getOrElse(""))
-            )
-        ).flatten
+    def mapping(template: Template) : List[Instance] = {
+        template.nodes.map(node =>
+            new Instance(node.name, 
+              template.name,
+              node.minRam.getOrElse(0),
+              node.minCores.getOrElse(1),
+              node.minDisk.getOrElse(0),
+              node.locationId.getOrElse(""))
+        )
     }
 }
