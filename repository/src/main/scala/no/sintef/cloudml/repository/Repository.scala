@@ -28,6 +28,7 @@ object Repository {
         templates.map(template => 
             template.nodes.map(node =>
                 new Instance(node.name, 
+                  template.name,
                   node.minRam.getOrElse(0),
                   node.minCores.getOrElse(1),
                   node.minDisk.getOrElse(0),
