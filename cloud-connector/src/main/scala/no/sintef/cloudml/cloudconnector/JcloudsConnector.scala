@@ -42,14 +42,14 @@ class JcloudsConnector(account: Account) extends CloudConnector {
         context.getComputeService()
     }
 
-    private def getLoadBalancerContext() = {
+    private def getLoadBalancerContext(): LoadBalancerService = {
         val context = new LoadBalancerServiceContextFactory().createContext(account.provider, 
             account.identity, account.credential)
         context.getLoadBalancerService()
     }
 
     def findHardwareByDisk(profiles: List[Hardware], minDisk: Int): Hardware = {
-        def volumeSum(l: List[Volume]) : Int = { 
+        def volumeSum(l: List[Volume]): Int = { 
             l.map(_.getSize).reduceLeft(_+_).toInt
         }
 
@@ -64,7 +64,7 @@ class JcloudsConnector(account: Account) extends CloudConnector {
     }
 
     override def createInstances(loadBalancer: Option[LoadBalancer], 
-          instances: List[Instance]): List[RuntimeInstance]  = {
+          instances: List[Instance]): List[RuntimeInstance] = {
         val client = auth()
 
         val runtimeInstanceMap = instances.map ( instance => {
@@ -121,8 +121,6 @@ class JcloudsConnector(account: Account) extends CloudConnector {
                 runtimeInstance ! AddProperty("publicAddresses", metadata.getPublicAddresses().mkString(","))
                 runtimeInstance ! AddProperty("id", metadata.getId())
 
-                runtimeInstance ! SetStatus(Status.Started)
-
                 counter -= 1
                 if (counter == 0 && loadBalancer.isDefined) {
                     val lb = loadBalancer.get
@@ -131,6 +129,8 @@ class JcloudsConnector(account: Account) extends CloudConnector {
                             null, lb.name, lb.protocol, lb.loadBalancerPort, 
                             lb.instancePort, nodes)
                 }
+
+                runtimeInstance ! SetStatus(Status.Started)
 
                 runtimeInstance
             }}
