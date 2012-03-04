@@ -24,7 +24,7 @@ import no.sintef.cloudml.repository.domain._
 import no.sintef.cloudml.kernel.domain._
 
 trait CloudConnector {
-    def createInstances(instance: List[Instance]): List[RuntimeInstance]
+    def createInstances(loadBalancer: Option[LoadBalancer], instance: List[Instance]): List[RuntimeInstance]
     def destroyInstance(id: String)
 }
 

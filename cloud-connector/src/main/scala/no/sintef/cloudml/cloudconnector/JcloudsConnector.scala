@@ -56,7 +56,8 @@ class JcloudsConnector(account: Account) extends CloudConnector {
         }
     }
 
-    override def createInstances(instances: List[Instance]): List[RuntimeInstance]  = {
+    override def createInstances(loadBalancer: Option[LoadBalancer], 
+          instances: List[Instance]): List[RuntimeInstance]  = {
         val client = auth()
 
         val runtimeInstanceMap = instances.map ( instance => {

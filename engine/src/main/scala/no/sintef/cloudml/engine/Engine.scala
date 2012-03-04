@@ -36,10 +36,12 @@ object Engine {
             Kernel.deserializeTemplate(templateJson)
         ) 
 
-        val instances = Repository.mapping(account, templates)
-
         cloudConnector = CloudConnector(account, "jscloud")
-        cloudConnector.createInstances(instances)
+
+        templates.map(template => {
+          val instances = Repository.mapping(template)
+          cloudConnector.createInstances(template.loadBalancer, instances)
+        }).flatten
     }
 
     def destroyNode(id: String) {
