@@ -25,6 +25,8 @@ import scala.actors.Actor._
 import scala.collection.mutable.HashMap
 import scala.collection.mutable.MutableList
 
+import no.sintef.cloudml.kernel.domain.Node
+
 case class AddProperty(name: String, value: String)
 case class SetStatus(status: Status.Value)
 
@@ -36,7 +38,7 @@ object Event extends Enumeration {
     val Property, Status = Value
 }
 
-case class RuntimeInstance(instance: Instance) extends Actor {
+case class RuntimeInstance(node: Node) extends Actor {
     private type Listener = (Event.Value) => Unit
 
     private var listeners: List[Listener] = Nil

@@ -2,14 +2,16 @@ package no.sintef.cloudml.repository.domain
 
 import org.specs2.mutable._
 
+import no.sintef.cloudml.kernel.domain.Node
+
 class RuntimeInstanceSpec extends SpecificationWithJUnit {
     "RuntimeInstance actors" should {
         "react and add properties when called" in {
-            val i = Instance("test", "test", 0, 0, 0, "")
-            var ri = new RuntimeInstance(i)
+            val n = Node("test1", None, None, None, None)
+            var ri = new RuntimeInstance(n)
             ri.start
 
-            ri.instance mustEqual(i)
+            ri.node mustEqual(n)
 
             var count = 0
             var status = Status.Configuring
