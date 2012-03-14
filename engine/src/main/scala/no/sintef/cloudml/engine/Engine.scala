@@ -39,8 +39,8 @@ object Engine {
         cloudConnector = CloudConnector(account, "jscloud")
 
         templates.map(template => {
-          val instances = Repository.mapping(template)
-          cloudConnector.createInstances(template.loadBalancer, instances)
+          Repository.sanityCheck(template)
+          cloudConnector.createInstances(template)
         }).flatten
     }
 

@@ -20,7 +20,7 @@
  */
 package no.sintef.cloudml.cloudconnector
 
-import org.jclouds.compute._
+import org.jclouds.compute.ComputeServiceContextFactory
 import org.jclouds.compute.domain.Volume
 import org.jclouds.compute.domain.Hardware
 import org.jclouds.loadbalancer._
@@ -63,50 +63,52 @@ class JcloudsConnector(account: Account) extends CloudConnector {
         }
     }
 
-    override def createInstances(loadBalancer: Option[LoadBalancer], 
-          instances: List[Instance]): List[RuntimeInstance] = {
+    override def createInstances(template: Template): List[RuntimeInstance] = {
         val client = auth()
 
-        val runtimeInstanceMap = instances.map ( instance => {
-            val runtimeInstance = new RuntimeInstance(instance)
+        val runtimeInstanceMap = template.nodes.map ( node => {
+            val runtimeInstance = new RuntimeInstance(node)
             runtimeInstance.start
 
             val templateBuilder = client.templateBuilder()
-            if (instance.minRam > 0) 
-                templateBuilder.minRam(instance.minRam)
-            if (instance.minRam > 0) 
-                templateBuilder.minCores(instance.minCores)
-            if (!Option(instance.locationId).getOrElse("").isEmpty)
-                templateBuilder.locationId(instance.locationId)
+            if (node.minRam.get > 0) 
+                templateBuilder.minRam(node.minRam.get)
+            if (node.minCores.get > 0) 
+                templateBuilder.minCores(node.minCores.get)
+            if (!node.locationId.getOrElse("").isEmpty)
+                templateBuilder.locationId(node.locationId.get)
 
-            if (instance.minDisk > 0 && account.provider != "aws-ec2") {
+            // Pick the node with enough disk available
+            if (node.minDisk.get > 0 && account.provider != "aws-ec2") {
                 val profiles = client.listHardwareProfiles.toList
-                val hw = findHardwareByDisk(profiles, instance.minDisk)
+                val hw = findHardwareByDisk(profiles, node.minDisk.get)
                 templateBuilder.hardwareId(hw.getId)
             }
 
-            val template = templateBuilder.build()
+            val cloudTemplate = templateBuilder.build()
 
-            if (instance.minDisk > 0 && account.provider == "aws-ec2") {
-                template.getOptions().as(classOf[EC2TemplateOptions]).
-                    mapNewVolumeToDeviceName("/dev/sdm", instance.minDisk, true)
+            // AWS EC2 support ELB and can dynamically allocate disk
+            // Must be run after template is built
+            if (node.minDisk.get > 0 && account.provider == "aws-ec2") {
+                cloudTemplate.getOptions().as(classOf[EC2TemplateOptions]).
+                    mapNewVolumeToDeviceName("/dev/sdm", node.minDisk.get, true)
             }
 
-            template.getOptions().blockUntilRunning(true)
+            cloudTemplate.getOptions().blockUntilRunning(true)
 
-            runtimeInstance ! AddProperty("imageId", template.getImage.getId())
-            runtimeInstance ! AddProperty("location", template.getLocation.getId())
+            runtimeInstance ! AddProperty("imageId", cloudTemplate.getImage.getId())
+            runtimeInstance ! AddProperty("location", cloudTemplate.getLocation.getId())
 
-            runtimeInstance -> template
+            runtimeInstance -> cloudTemplate
         }).toMap
 
         Futures.future {
             var counter = runtimeInstanceMap.size()
 
-            runtimeInstanceMap.foreach { case (runtimeInstance, template) => {
+            runtimeInstanceMap.foreach { case (runtimeInstance, cloudTemplate) => {
                 runtimeInstance ! SetStatus(Status.Building)
 
-                val nodes = client.createNodesInGroup("webserver", 1, template).toSet
+                val nodes = client.createNodesInGroup("webserver", 1, cloudTemplate).toSet
                 val node = nodes.head
                 runtimeInstance ! AddProperty("id", node.getId())
                 runtimeInstance ! AddProperty("provider", node.getProviderId())
@@ -122,8 +124,8 @@ class JcloudsConnector(account: Account) extends CloudConnector {
                 runtimeInstance ! AddProperty("id", metadata.getId())
 
                 counter -= 1
-                if (counter == 0 && loadBalancer.isDefined) {
-                    val lb = loadBalancer.get
+                if (counter == 0 && template.loadBalancer.isDefined) {
+                    val lb = template.loadBalancer.get
                     val loadBalancerContext = getLoadBalancerContext()
                     val balancer = loadBalancerContext.createLoadBalancerInLocation(
                             null, lb.name, lb.protocol, lb.loadBalancerPort, 
